@@ -2,9 +2,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:helpinghand/common/widgets/title_medium.dart';
+
+import '../login/login_screen.dart';
+import '../signup/registration_screen.dart';
 
 
 class OnBoardingScreen extends StatelessWidget {
@@ -20,20 +22,20 @@ class OnBoardingScreen extends StatelessWidget {
       ),
       skipTextButton: const Text('Skip'),
       onFinish: () {
-        // Navigator.push(
-        //   context,
-        //   CupertinoPageRoute(
-        //     builder: (context) => const RegisterScreen(),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => const RegisterScreen(),
+          ),
+        );
       },
       trailingFunction: () {
-        // Navigator.push(
-        //   context,
-        //   CupertinoPageRoute(
-        //     builder: (context) =>  const LoginScreen(),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) =>  const LoginScreen(),
+          ),
+        );
         final storage = GetStorage();
         storage.write('isFirstTime', false);
       },
@@ -44,56 +46,56 @@ class OnBoardingScreen extends StatelessWidget {
             child: Center(child: Image.asset('assets/onboarding_1.png',height: 400,width: 400,fit: BoxFit.fill,),)),
         Container(
             margin:const EdgeInsets.only(top: 20),
-            child: Center(child: Image.asset('assets/onboarding_2.png',height: 400,width: 400,fit: BoxFit.fill,),)),
+            child: Center(child: Image.asset('assets/onboarding_2.png',height: 400,width: 400,fit: BoxFit.fitHeight,),)),
         Container(
             margin:const EdgeInsets.only(top: 20),
-            child: Center(child: Image.asset('assets/onboarding_3.png',height: 400,width: 400,fit: BoxFit.fill,),)),
+            child: Center(child: Image.asset('assets/onboarding_3.png',height: 400,width: 400,fit: BoxFit.fitHeight,),)),
       ],
       totalPage: 3,
       speed: 1.8,
       pageBodies: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: const Column(
+          child:  Column(
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 480,
               ),
-              TitleMedium(text: "Welcome"),
+              const TitleMedium(text: "Welcome to Helping Hand"),
 
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
-              Text("Explore Flexible Hourly Booking Options for Your Ideal Stay Experience",textAlign: TextAlign.center,)
+              Text("Helping Hand supports international students in Australia. Access essential services, job opportunities, and expert guidance with ease.",textAlign: TextAlign.center,style: TextStyle(color: Colors.grey.shade600),)
             ],
           ),
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: const Column(
+          child: Column(
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 480,
               ),
-              TitleMedium(text: "Get Started"),
+              const TitleMedium(text: "Discover Essential Services"),
 
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
-              Text("Create a New Account or Log In to Unlock Exclusive Deals and Benefits",textAlign: TextAlign.center,)
+              Text("Explore services for TFN, ABN, banking, police checks, and housing. Our verified  experts are here to assist you.",textAlign: TextAlign.center,style:TextStyle(color: Colors.grey.shade600))
             ],
           ),
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: const Column(
+          child:  Column(
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 480,
               ),
-              TitleMedium(text: "Tailor Your Experience"),
+              const TitleMedium(text: "Find Your Perfect Job"),
 
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
-              Text("Select Your Preferences to Customize Your Perfect Hourly Stay with Us",textAlign: TextAlign.center,)
+              Text("Access job opportunities tailored to your profile. Apply directly and get support from our admin and experts in your job hunt.",textAlign: TextAlign.center,style:TextStyle(color: Colors.grey.shade600))
             ],
           ),
         ),

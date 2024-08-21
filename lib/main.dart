@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:helpinghand/bindings/general_bindings.dart';
-import 'package:helpinghand/core/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:helpinghand/features/authentication/screens/onboarding/onboarding.dart';
+import 'package:helpinghand/repositories/authentication/authentication_repository.dart';
 
+import 'bindings/general_bindings.dart';
+import 'core/app_theme.dart';
 import 'core/colors/light_theme_color.dart';
 
 
@@ -24,6 +24,8 @@ Future<void> main() async{
 
   //await splash until other items load
   FlutterNativeSplash.preserve(widgetsBinding: widgetBinding);
+
+  Get.put(AuthenticationRepository());
 
   runApp(const MyApp());
 }
@@ -44,8 +46,9 @@ class MyApp extends StatelessWidget {
         designSize: const Size(390, 844),
         minTextAdapt: true,
         splitScreenMode: true,
-        child: OnBoardingScreen()),
-
+        child: Scaffold(backgroundColor: LightThemeColor.colorPrimary,
+          body: const Center(child: CircularProgressIndicator(color: Colors.white,),),),
+      ),
       // home: const ScreenUtilInit(
       //     designSize: Size(390, 844),
       //     minTextAdapt: true,

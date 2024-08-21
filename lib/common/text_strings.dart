@@ -28,7 +28,7 @@ class GTexts {
 
   //Authentication form
 
-  static const String loginToContinue = "Login to continue booking your stay or managing your hotel.";
+  static const String loginToContinue = "Login to Helping Hand for tailored jobs, essential services, and expert guidance.";
 
 
 }
