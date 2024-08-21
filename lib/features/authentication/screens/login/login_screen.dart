@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/authentication/screens/signup/expert_registration_screen.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../Utils/Validator/FormValidator.dart';
@@ -95,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                                     value: controller.rememberMe.value,
                                     onChanged: (value) => controller.rememberMe.value = !controller.rememberMe.value),
                               ),
-                              const Text("Remember me")
+                              const Text( GTexts.rememberMe,)
                             ],
                           ),
                           GestureDetector(
@@ -103,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                             //   Get.to(()=> const ForgetPasswordScreen());
                             // },
                             child: Text(
-                              "Forgot Password?",
+                              GTexts.forgetPassword,
                               style: style14(color: ThemeColor.colorPrimary),
                             ),
                           ),
@@ -112,7 +113,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 40),
                     SubmitButton(
-                      text: "Login",
+                      text: GTexts.login,
                       onPressedCallback: () => controller.emailAndPasswordSignIn(),
                     )
                   ],
@@ -125,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have account ?",
+                        GTexts.dontHaveAcc,
                         style: style16(),
                       ),
                       const SizedBox(
@@ -136,7 +137,7 @@ class LoginScreen extends StatelessWidget {
                             Get.to(() => const RegisterScreen());
                           },
                           child: Text(
-                            "Create Student account",
+                            GTexts.createStuAcc,
                             style: style16(color: ThemeColor.colorPrimary),
                           ))
                     ],
@@ -148,7 +149,7 @@ class LoginScreen extends StatelessWidget {
             
                 Center(
                   child: Text(
-                    "Want to help Students ?",
+                    GTexts.wantToHelp,
                     style: style16(),
                   ),
                 ),
@@ -156,8 +157,8 @@ class LoginScreen extends StatelessWidget {
                   height: 30,
                 ),
                 SubmitButton(
-                  text: "Signup For Expert",
-                  onPressedCallback: () => controller.emailAndPasswordSignIn(),
+                  text: GTexts.signUpExpert,
+                  onPressedCallback: () =>  Get.to(() => const ExpertRegisterScreen())
                 ),
                 const SizedBox(height: 30,)
               ],

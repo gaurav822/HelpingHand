@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/authentication/controllers/signup/expert_signup_controller.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../Utils/Validator/FormValidator.dart';
 import '../../../../common/text_strings.dart';
@@ -8,18 +9,41 @@ import '../../../../common/widgets/field_widget.dart';
 import '../../../../common/widgets/submit_button.dart';
 import '../../../../core/app_color.dart';
 import '../../../../core/app_style.dart';
+import '../../../../core/colors/light_theme_color.dart';
 import '../../controllers/signup/signup_controller.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class ExpertRegisterScreen extends StatefulWidget {
+  const ExpertRegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _ExpertRegisterScreenState createState() => _ExpertRegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  final controller = Get.put(SignUpController());
-  bool isHotelOwner = false;
+class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
+  final controller = Get.put(ExpertSignUpController());
+
+  // Static map of services with service name as the key and service ID as the value
+  final Map<String, String> services = {
+    'TFN': 'service_001',
+    'ABN': 'service_002',
+    'Bank Setup': 'service_003',
+    'Police Report': 'service_004',
+    'JOBS': 'service_005',
+    'Accommodation': 'service_006',
+    'Others': 'service_007',
+  };
+
+  // This map will track which services are selected
+  final RxMap<String, bool> selectedServices = <String, bool>{}.obs;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    services.forEach((key, value) {
+      selectedServices[key] = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 Center(
                   child: Text(
-                    GTexts.studentReg,
+                    GTexts.expertReg,
                     style: style20Medium(),
                   ),
                 ),
@@ -55,14 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 10),
                     FieldWidget(
-                      label: GTexts.uniColg,
-                      controller: controller.schoolName,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.school,value),
-                    ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.schoolMail,
+                      label: GTexts.email,
                       controller: controller.emailAddress,
                       validator: (value) =>
                           FormValidator.validateEmail(value),
@@ -90,6 +107,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) =>
                           FormValidator.validateEmptyText(GTexts.address, value),
                     ),
+                    const SizedBox(height: 10),
+
+                    FieldWidget(
+                      label: GTexts.shortBio,
+                      controller: controller.bio,
+                      maxLines: 2,
+                      maxLength: 60,
+                      validator: (value) =>
+                          FormValidator.validateEmptyText(GTexts.shortBio, value),
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
@@ -114,12 +141,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       ),
                     ),
+                    const SizedBox(height: 30,),
+                    ...services.keys.map((serviceName) {
+                      return Obx(() => CheckboxListTile(
+
+                        activeColor: LightThemeColor.colorPrimary,
+                        title: Text(serviceName, style: style16Medium()),
+                        value: selectedServices[serviceName],
+                        onChanged: (value) {
+                          setState(() {
+                            selectedServices[serviceName] = value!;
+                          });
+                        },
+                      ));
+                    }),
 
                     const SizedBox(height: 40),
                     SubmitButton(
                       text: GTexts.register,
                       onPressedCallback: () {
-                        SignUpController.instance.signUp(role: isHotelOwner?'hotel_owner':'customer');
+                        SignUpController.instance.signUp(role: 'customer');
                       },
                     ),
                   ],
