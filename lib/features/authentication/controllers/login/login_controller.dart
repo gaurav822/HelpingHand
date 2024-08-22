@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:helpinghand/features/dashboard/screens/student_dashboard.dart';
 
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
@@ -55,7 +56,9 @@ class LoginController extends GetxController {
       FullScreenLoader.stopLoading();
 
       //Redirect
-      AuthenticationRepository.instance.screenRedirect();
+      // AuthenticationRepository.instance.screenRedirect();
+
+    Get.offAll(      StudentDashboard(menuScreenContext: Get.context!))      ;
 
       //
     } catch (e) {

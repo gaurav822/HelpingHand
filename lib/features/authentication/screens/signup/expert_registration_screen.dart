@@ -36,12 +36,16 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
   // This map will track which services are selected
   final RxMap<String, bool> selectedServices = <String, bool>{}.obs;
 
+  // Add this to keep track of selected services with image upload statuses
+  final RxMap<String, String?> uploadedDocuments = <String, String?>{}.obs;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     services.forEach((key, value) {
       selectedServices[key] = false;
+      uploadedDocuments[key] = null;
     });
   }
 
@@ -142,19 +146,35 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 30,),
-                    ...services.keys.map((serviceName) {
-                      return Obx(() => CheckboxListTile(
+                    // Inside the build method of _ExpertRegisterScreenState
 
-                        activeColor: LightThemeColor.colorPrimary,
-                        title: Text(serviceName, style: style16Medium()),
-                        value: selectedServices[serviceName],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedServices[serviceName] = value!;
-                          });
-                        },
-                      ));
-                    }),
+                    ...services.keys.map((serviceName) {
+                      return Obx(() {
+                        final isSelected = selectedServices[serviceName]!;
+                        return Column(
+                          children: [
+                            CheckboxListTile(
+                              activeColor: LightThemeColor.colorPrimary,
+                              title: Text(serviceName, style: style16Medium()),
+                              value: isSelected,
+                              onChanged: (value) {
+                                selectedServices[serviceName] = value!;
+                              },
+                            ),
+                            if (isSelected)
+                              ImagePickerWidget(
+                                title: 'Upload document for $serviceName',
+                                onImagePicked: (imagePath) {
+                                  // uploadedDocuments[serviceName] = imagePath;
+                                },
+                              ),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      });
+                    }).toList(),
+
+
 
                     const SizedBox(height: 40),
                     SubmitButton(
