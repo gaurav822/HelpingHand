@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:helpinghand/features/dashboard/screens/student_dashboard.dart';
+import 'package:helpinghand/features/dashboard_expert/screens/expert_dashboard.dart';
 
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
@@ -57,8 +58,12 @@ class LoginController extends GetxController {
 
       //Redirect
       // AuthenticationRepository.instance.screenRedirect();
-
-    Get.offAll(      StudentDashboard(menuScreenContext: Get.context!))      ;
+    if(emailAddress.text.contains("expert")){
+      Get.offAll(      ExpertDashboard(menuScreenContext: Get.context!))      ;
+    }
+    else{
+      Get.offAll(      StudentDashboard(menuScreenContext: Get.context!))      ;
+    }
 
       //
     } catch (e) {

@@ -3,20 +3,23 @@ import 'package:flutter_svg/flutter_svg.dart';
 import "package:helpinghand/features/dashboard/screens/chat_screen.dart";
 import "package:helpinghand/features/dashboard/screens/profile_screen.dart";
 import "package:helpinghand/features/dashboard/screens/service_screen.dart";
+import "package:helpinghand/features/dashboard_expert/screens/expert_home_screen.dart";
+import "package:helpinghand/features/dashboard_expert/screens/expert_profile_screen.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
-import "home_screen_student.dart";
+
+import "expert_chat_screen.dart";
 
 
 
-class StudentDashboard extends StatefulWidget {
-  const StudentDashboard({super.key, required this.menuScreenContext});
+class ExpertDashboard extends StatefulWidget {
+  const ExpertDashboard({super.key, required this.menuScreenContext});
   final BuildContext menuScreenContext;
 
   @override
-  _StudentDashboardState createState() => _StudentDashboardState();
+  _ExpertDashboardState createState() => _ExpertDashboardState();
 }
 
-class _StudentDashboardState extends State<StudentDashboard> {
+class _ExpertDashboardState extends State<ExpertDashboard> {
   late BuildContext testContext;
   late PersistentTabController _controller;
   late bool _hideNavBar;
@@ -29,7 +32,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
   }
 
   List<Widget> _buildScreens() => [
-    HomeScreen(
+    ExpertHomeScreen(
       menuScreenContext: widget.menuScreenContext,
       hideStatus: _hideNavBar,
       onScreenHideButtonPressed: () {
@@ -38,16 +41,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
         });
       },
     ),
-    ServiceListScreen(
-      menuScreenContext: widget.menuScreenContext,
-      hideStatus: _hideNavBar,
-      onScreenHideButtonPressed: () {
-        setState(() {
-          _hideNavBar = !_hideNavBar;
-        });
-      },
-    ),
-    ChatScreen(
+    ExpertChatScreen(
       menuScreenContext: widget.menuScreenContext,
       hideStatus: _hideNavBar,
       onScreenHideButtonPressed: () {
@@ -57,7 +51,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
       },
     ),
 
-    ProfileScreen(
+    ExpertProfileScreen(
       menuScreenContext: widget.menuScreenContext,
       hideStatus: _hideNavBar,
       onScreenHideButtonPressed: () {
@@ -73,15 +67,6 @@ class _StudentDashboardState extends State<StudentDashboard> {
       icon: const Icon(Icons.home),
       title: "Home",
       inactiveIcon: const Icon(Icons.home),
-      activeColorPrimary: Colors.teal,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.task),
-      title: "Services",
-      inactiveIcon: const Icon(Icons.task),
       activeColorPrimary: Colors.teal,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,

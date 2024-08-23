@@ -91,6 +91,11 @@ flutter:
      - assets/tfn.jpg
      - assets/accomodation.jpg
      - assets/bank.jpg
+     - assets/no_result.jpg
+     - assets/icons/svgs/verified.svg
+     - assets/icons/svgs/disapproved.svg
+     - assets/icons/svgs/doc.svg
+     - assets/icons/verified.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
