@@ -4,11 +4,10 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:helpinghand/repositories/authentication/authentication_repository.dart';
-
 import 'bindings/general_bindings.dart';
 import 'core/app_theme.dart';
 import 'core/colors/light_theme_color.dart';
+import 'data/repositories/authentication/authentication_repository.dart';
 
 
 Future<void> main() async{

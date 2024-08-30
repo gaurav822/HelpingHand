@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import '../../../features/authentication/screens/login/login_screen.dart';
 import '../../../features/authentication/screens/onboarding/onboarding.dart';
-import '../../features/authentication/screens/login/login_screen.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -22,7 +22,7 @@ class AuthenticationRepository extends GetxController {
   //function to show relavant screen
 
   screenRedirect() async {
-      _handleFirstTimeLaunch();
+    _handleFirstTimeLaunch();
   }
 
   _handleFirstTimeLaunch(){

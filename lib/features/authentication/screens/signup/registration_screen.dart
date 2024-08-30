@@ -19,7 +19,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final controller = Get.put(SignUpController());
-  bool isHotelOwner = false;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SubmitButton(
                       text: GTexts.register,
                       onPressedCallback: () {
-                        SignUpController.instance.signUp(role: isHotelOwner?'hotel_owner':'customer');
+                        SignUpController.instance.signUp(role:'customer');
                       },
                     ),
                   ],

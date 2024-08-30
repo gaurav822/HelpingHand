@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/authentication/models/student_model.dart';
 import 'package:helpinghand/features/authentication/screens/signup/verify_account_screen.dart';
 
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
 import '../../../../core/network/network_manager.dart';
-import '../../../../repositories/authentication/authentication_repository.dart';
+import '../../../../data/repositories/student/student_repository.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
@@ -20,9 +21,6 @@ class SignUpController extends GetxController {
   final phoneNumber = TextEditingController();
   final address = TextEditingController();
   final password = TextEditingController();
-  final hotelPan = TextEditingController();
-  final hotelAddress = TextEditingController();
-
   final formKey = GlobalKey<FormState>();
 
   void signUp({String? role}) async {
@@ -43,24 +41,19 @@ class SignUpController extends GetxController {
         return;
       }
 
-      //Register user in firebase authentication and save user data in the firebase
-      // final userCredential = await AuthenticationRepository.instance
-      //     .registerWithEmailAndPassword(
-      //     emailAddress.text.trim(), password.text.trim());
+      // save authenticated user to firebase firestore
+      final student = StudentModel(
+          firstname: firstName.text.trim(),
+          lastname: lastName.text.trim(),
+          school: schoolName.text.trim(),
+          schoolEmail: emailAddress.text.trim(),
+          nationality: nationality.text.trim(),
+          phoneNumber: phoneNumber.text.trim(),
+          address: address.text.trim(),
+          password: password.text.trim());
 
-      //save authenticated user to firebase firestore
-      // final user = UserModel(
-      //     id: userCredential.user!.uid,
-      //     role: role!,
-      //     firstname: firstName.text.trim(),
-      //     lastname: lastName.text.trim(),
-      //     email: emailAddress.text.trim(),
-      //     phoneNumber: phoneNumber.text.trim(),
-      //     address: address.text.trim(),
-      //     businessPanNumber: hotelPan.text.trim());
-
-      // final userRepository = Get.put(UserRepository());
-      // await userRepository.saveUserRecord(user);
+      final studentRepository = Get.put(StudentRepository());
+      await studentRepository.saveStudentRecord(student);
 
       FullScreenLoader.stopLoading();
 

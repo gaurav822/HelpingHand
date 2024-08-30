@@ -5,7 +5,6 @@ import 'package:helpinghand/features/authentication/screens/signup/verify_accoun
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
 import '../../../../core/network/network_manager.dart';
-import '../../../../repositories/authentication/authentication_repository.dart';
 
 class ExpertSignUpController extends GetxController {
   static ExpertSignUpController get instance => Get.find();
@@ -21,8 +20,6 @@ class ExpertSignUpController extends GetxController {
   final address = TextEditingController();
   final bio = TextEditingController();
   final password = TextEditingController();
-  final hotelPan = TextEditingController();
-  final hotelAddress = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 

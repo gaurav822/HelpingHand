@@ -7,7 +7,6 @@ import 'package:helpinghand/features/dashboard_expert/screens/expert_dashboard.d
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
 import '../../../../core/network/network_manager.dart';
-import '../../../../repositories/authentication/authentication_repository.dart';
 
 class LoginController extends GetxController {
   static LoginController get instance => Get.find();
