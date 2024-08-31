@@ -180,7 +180,7 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
                     SubmitButton(
                       text: GTexts.register,
                       onPressedCallback: () {
-                        SignUpController.instance.signUp(role: 'customer');
+                        // SignUpController.instance.signUp(role: 'customer');
                       },
                     ),
                   ],

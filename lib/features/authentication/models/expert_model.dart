@@ -1,20 +1,16 @@
-class StudentModel {
+class ExpertModel {
   final String firstname;
   final String lastname;
-  final String school;
   final String email;
-  final String schoolEmail;
   final String nationality;
   final String phoneNumber;
   final String address;
   final String password;
 
-  StudentModel({
+  ExpertModel({
     required this.firstname,
     required this.lastname,
-    required this.school,
     required this.email,
-    required this.schoolEmail,
     required this.nationality,
     required this.phoneNumber,
     required this.address,
@@ -25,12 +21,10 @@ class StudentModel {
   String get fullName => '$firstname $lastname';
 
   // Static function to create an empty user model
-  static StudentModel empty() => StudentModel(
+  static ExpertModel empty() => ExpertModel(
     firstname: '',
     lastname: '',
-    school: '',
     email: '',
-    schoolEmail: '',
     nationality: '',
     phoneNumber: '',
     address: '',
@@ -42,9 +36,7 @@ class StudentModel {
     final data = {
       'firstname': firstname,
       'lastname': lastname,
-      'school': school,
       'email':email,
-      'schoolEmail': schoolEmail,
       'nationality': nationality,
       'phoneNumber': phoneNumber,
       'address': address,
@@ -55,13 +47,11 @@ class StudentModel {
   }
 
   // Factory method to create an instance from JSON
-  factory StudentModel.fromJson(Map<String, dynamic> json) {
-    return StudentModel(
+  factory ExpertModel.fromJson(Map<String, dynamic> json) {
+    return ExpertModel(
       firstname: json['firstname'],
       lastname: json['lastname'],
-      school: json['school'],
       email: json['email'],
-      schoolEmail: json['schoolEmail'],
       nationality: json['nationality'],
       phoneNumber: json['phoneNumber'],
       address: json['address'],

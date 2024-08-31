@@ -16,6 +16,7 @@ class SignUpController extends GetxController {
   final firstName = TextEditingController();
   final lastName = TextEditingController();
   final emailAddress = TextEditingController();
+  final schoolEmailAddress = TextEditingController();
   final schoolName = TextEditingController();
   final nationality = TextEditingController();
   final phoneNumber = TextEditingController();
@@ -23,7 +24,7 @@ class SignUpController extends GetxController {
   final password = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  void signUp({String? role}) async {
+  void signUp() async {
     try {
       //start loading
       FullScreenLoader.openLoadingDialog("Processing your information...");
@@ -46,7 +47,8 @@ class SignUpController extends GetxController {
           firstname: firstName.text.trim(),
           lastname: lastName.text.trim(),
           school: schoolName.text.trim(),
-          schoolEmail: emailAddress.text.trim(),
+          email: emailAddress.text.trim(),
+          schoolEmail: schoolEmailAddress.text.trim(),
           nationality: nationality.text.trim(),
           phoneNumber: phoneNumber.text.trim(),
           address: address.text.trim(),

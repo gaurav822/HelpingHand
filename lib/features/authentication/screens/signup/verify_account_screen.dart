@@ -31,7 +31,7 @@ class VerifyAccountScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0), // Optional: Add padding for better alignment
                   child: Text(
-                    "We are on the way to verify your  document! Meanwhile you need to verify your email address.",
+                    "We are on the way to verify your  document!",
                     style: style14(),
                     textAlign: TextAlign.center, // Center align the text within the Text widget
                   ),

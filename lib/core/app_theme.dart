@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:helpinghand/core/app_string.dart';
 import 'package:helpinghand/core/app_style.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,14 @@ class AppTheme {
   bool isLightTheme  = false;
   static ThemeData lightAppTheme = ThemeData(
     useMaterial3: true,
-    appBarTheme: const AppBarTheme(
+    appBarTheme:  const AppBarTheme(
       color: Color(0xFF0EA800),
       centerTitle: true,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.white, // Status bar color
+        statusBarIconBrightness: Brightness.dark, // Dark icons
+      ),
+
     ),
     dialogTheme: const DialogTheme(
       shape: RoundedRectangleBorder(

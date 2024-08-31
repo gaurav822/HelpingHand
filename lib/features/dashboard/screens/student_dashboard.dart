@@ -76,6 +76,9 @@ class _StudentDashboardState extends State<StudentDashboard> {
       activeColorPrimary: Colors.teal,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
+      routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+        initialRoute: "/",
+      ),
     ),
 
     PersistentBottomNavBarItem(
@@ -85,6 +88,9 @@ class _StudentDashboardState extends State<StudentDashboard> {
       activeColorPrimary: Colors.teal,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
+      routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+        initialRoute: "/",
+      ),
     ),
 
     PersistentBottomNavBarItem(
@@ -94,6 +100,9 @@ class _StudentDashboardState extends State<StudentDashboard> {
       activeColorPrimary: Colors.teal,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
+      routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+        initialRoute: "/",
+      ),
     ),
 
 
@@ -103,6 +112,9 @@ class _StudentDashboardState extends State<StudentDashboard> {
       title: "Profile",
       activeColorPrimary: Colors.teal,
       inactiveColorPrimary: Colors.grey,
+      routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+        initialRoute: "/",
+      ),
     ),
   ];
 

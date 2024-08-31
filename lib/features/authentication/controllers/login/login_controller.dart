@@ -7,6 +7,8 @@ import 'package:helpinghand/features/dashboard_expert/screens/expert_dashboard.d
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
 import '../../../../core/network/network_manager.dart';
+import '../../../../data/repositories/authentication/authentication_repository.dart';
+import '../../screens/signup/verify_account_screen.dart';
 
 class LoginController extends GetxController {
   static LoginController get instance => Get.find();
@@ -51,23 +53,36 @@ class LoginController extends GetxController {
 
       //Login user with email and password authentication
 
-      // await AuthenticationRepository.instance.loginWithEmailAndPassword(emailAddress.text.trim(),password.text.trim());
+
+      String userType = await AuthenticationRepository.instance.signInWithEmailPass(email: emailAddress.text.trim(),password:password.text.trim());
 
       FullScreenLoader.stopLoading();
 
-      //Redirect
-      // AuthenticationRepository.instance.screenRedirect();
-    if(emailAddress.text.contains("expert")){
-      Get.offAll(      ExpertDashboard(menuScreenContext: Get.context!))      ;
-    }
-    else{
-      Get.offAll(      StudentDashboard(menuScreenContext: Get.context!))      ;
-    }
+      // If the user type is retrieved, navigate based on it
+      if (userType.isNotEmpty) {
+         navigateBasedOnUserType(userType);
+      }
+      else{
+        Get.offAll(() => const VerifyAccountScreen(email: "testemail",));
+      }
 
       //
     } catch (e) {
       FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: 'Oh no!',message: e.toString());
+    }
+  }
+
+  void navigateBasedOnUserType(String userType) {
+    Loaders.successSnackBar(
+        title: "Login Successful",
+        message: "");
+    if (userType == 'Student') {
+
+      Get.offAll(() => StudentDashboard(menuScreenContext: Get.context!));
+    } else
+    {
+      Get.offAll(() => ExpertDashboard(menuScreenContext: Get.context!));
     }
   }
 }

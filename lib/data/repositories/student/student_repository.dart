@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:helpinghand/Utils/constants.dart';
 import 'package:helpinghand/features/authentication/models/student_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -8,11 +9,9 @@ import '../../../Utils/exceptions/api_exceptions.dart';
 class StudentRepository extends GetxController {
   static StudentRepository get instance => Get.find();
 
-  final String baseUrl = "https://helpinghandapi.onrender.com/api"; // Replace with your API base URL
-
   // Function to save user data through API
   Future<void> saveStudentRecord(StudentModel student) async {
-    final url = Uri.parse('$baseUrl/auth/register/student');
+    final url = Uri.parse('${AppConstants.baseUrl}/auth/register/student');
     try {
       final response = await http.post(
         url,

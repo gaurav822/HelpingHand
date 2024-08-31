@@ -30,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             key: controller.formKey,
             child: Column(
               children: [
+                SizedBox(height: 20,),
                 Center(
                   child: Text(
                     GTexts.studentReg,
@@ -61,8 +62,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 10),
                     FieldWidget(
-                      label: GTexts.schoolMail,
+                      label: GTexts.email,
                       controller: controller.emailAddress,
+                      validator: (value) =>
+                          FormValidator.validateEmail(value),
+                    ),
+                    const SizedBox(height: 10),
+                    FieldWidget(
+                      label: GTexts.schoolMail,
+                      controller: controller.schoolEmailAddress,
                       validator: (value) =>
                           FormValidator.validateEmail(value),
                     ),
@@ -118,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SubmitButton(
                       text: GTexts.register,
                       onPressedCallback: () {
-                        SignUpController.instance.signUp(role:'customer');
+                        SignUpController.instance.signUp();
                       },
                     ),
                   ],

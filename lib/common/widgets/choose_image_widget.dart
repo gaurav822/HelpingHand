@@ -44,7 +44,7 @@ class ImagePickerWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Iconsax.gallery),
+                 Image.asset("assets/icons/upload.png",height: 40,width: 50,),
                   const SizedBox(
                     width: 10,
                   ),
