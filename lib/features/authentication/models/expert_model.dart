@@ -6,6 +6,9 @@ class ExpertModel {
   final String phoneNumber;
   final String address;
   final String password;
+  final String bio;
+  final int rating;
+  final List<String> expertise;
 
   ExpertModel({
     required this.firstname,
@@ -15,6 +18,9 @@ class ExpertModel {
     required this.phoneNumber,
     required this.address,
     required this.password,
+    required this.bio,
+    required this.rating,
+    required this.expertise
   });
 
   // Helper function to get full name
@@ -29,6 +35,9 @@ class ExpertModel {
     phoneNumber: '',
     address: '',
     password: '',
+    bio :  '',
+    rating : 0,
+    expertise: []
   );
 
   // Method to convert an instance to JSON
@@ -41,6 +50,9 @@ class ExpertModel {
       'phoneNumber': phoneNumber,
       'address': address,
       'password': password,
+      'bio':bio,
+      'rating':rating,
+      'expertise':expertise
     };
 
     return data;
@@ -52,10 +64,13 @@ class ExpertModel {
       firstname: json['firstname'],
       lastname: json['lastname'],
       email: json['email'],
+      bio:json['bio'],
       nationality: json['nationality'],
       phoneNumber: json['phoneNumber'],
       address: json['address'],
       password: json['password'],
+      rating:json['rating'],
+      expertise: json['expertise']
     );
   }
 }

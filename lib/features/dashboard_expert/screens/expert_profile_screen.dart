@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/core/colors/light_theme_color.dart';
+import 'package:helpinghand/data/repositories/authentication/authentication_repository.dart';
 import 'package:helpinghand/features/authentication/screens/login/login_screen.dart';
 import 'package:helpinghand/features/dashboard/controllers/profile_controller.dart';
 
@@ -107,26 +109,7 @@ class ExpertProfileScreen extends StatelessWidget {
 
                   SizedBox(height: 100,),
 
-                  SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    10), // This makes the button rectangular with sharp corners
-                              ),
-                              backgroundColor: LightThemeColor.colorPrimary
-                          ),
 
-                          onPressed: (){
-                            Get.offAll(()=>const LoginScreen());
-                          }, child: const Text("Change Password")),
-                    ),
-                  ),
-
-                  SizedBox(height: 20,),
 
                   SizedBox(
                     width: double.infinity,
@@ -141,7 +124,9 @@ class ExpertProfileScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: (){
+                            AuthenticationRepository.instance.logout();
                             Get.offAll(()=>const LoginScreen());
+                            Fluttertoast.showToast(msg: "Logout Successful");
                           }, child: const Text("Logout")),
                     ),
                   ),

@@ -146,7 +146,22 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 30,),
+
                     // Inside the build method of _ExpertRegisterScreenState
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Select your Expertise",style: style16Medium(),),
+                        const SizedBox(width: 20,),
+                        InkWell(
+                          onTap: (){
+                            _showInformationDialog(context);
+                          },
+                            child: Image.asset("assets/question.png",height: 30,width: 30,))
+                      ],
+                    ),
+                    const SizedBox(height: 30,),
 
                     ...services.keys.map((serviceName) {
                       return Obx(() {
@@ -180,7 +195,8 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
                     SubmitButton(
                       text: GTexts.register,
                       onPressedCallback: () {
-                        // SignUpController.instance.signUp(role: 'customer');
+                        controller.updateSelectedServices(selectedServices);
+                        ExpertSignUpController.instance.signUp();
                       },
                     ),
                   ],
@@ -210,6 +226,107 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showInformationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Important Information',
+
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Please select your expertise from the below and for each of the expertise you will need to upload the corresponding documents for background check:',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 16),
+                _buildInfoItem(
+                  'TFN',
+                  'Upload your own tax file related document issued by Australian document',
+                  Icons.file_copy,
+                ),
+                _buildInfoItem(
+                  'ABN',
+                  'Upload your own Australian Business related document issued by Australian document',
+                  Icons.business,
+                ),
+                _buildInfoItem(
+                  'Bank Setup',
+                  'Upload relevant documents',
+                  Icons.account_balance,
+                ),
+                _buildInfoItem(
+                  'Police report',
+                  'Upload your police report check',
+                  Icons.report,
+                ),
+                _buildInfoItem(
+                  'Jobs & Accommodation',
+                  'Upload your proof of past works',
+                  Icons.work,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: LightThemeColor.colorPrimary,
+              ),
+              child: Text('OK',style: style16(color: ThemeColor.colorWhiteText),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildInfoItem(String title, String description, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Icon(
+            icon,
+            color: LightThemeColor.colorPrimary,
+            size: 24,
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                text: '$title -> ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: description,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

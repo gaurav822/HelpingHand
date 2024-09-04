@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
 import 'package:helpinghand/features/authentication/models/expert_model.dart';
 import 'package:helpinghand/features/authentication/screens/signup/verify_account_screen.dart';
 
@@ -17,13 +18,19 @@ class ExpertSignUpController extends GetxController {
   final emailAddress = TextEditingController();
   final nationality = TextEditingController();
   final phoneNumber = TextEditingController();
-  final expertise = TextEditingController();
   final address = TextEditingController();
   final bio = TextEditingController();
   final password = TextEditingController();
   final rating = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
+  // Add this to hold selected services
+  final RxMap<String, bool> selectedServices = <String, bool>{}.obs;
+
+  void updateSelectedServices(Map<String, bool> services) {
+    selectedServices.value = services;
+  }
 
   void signUp() async {
     try {
@@ -43,22 +50,34 @@ class ExpertSignUpController extends GetxController {
         return;
       }
 
+      // Collect selected services
+      final expertise = selectedServices.entries
+          .where((entry) => entry.value)
+          .map((entry) => entry.key)
+          .toList();
+
+      print(expertise);
+
       // save authenticated user to firebase firestore
-      final student = ExpertModel(
+      final expert = ExpertModel(
           firstname: firstName.text.trim(),
           lastname: lastName.text.trim(),
           email: emailAddress.text.trim(),
           nationality: nationality.text.trim(),
           phoneNumber: phoneNumber.text.trim(),
           address: address.text.trim(),
-          password: password.text.trim());
+          password: password.text.trim(),
+          bio: bio.text.trim(),
+          expertise: expertise,
+          rating: 5
+      );
 
-      // final expertRepository = Get.put(StudentRepository());
-      // await expertRepository.saveExpertRecord(student);
+      final expertRepository = Get.put(ExpertRepository());
+      await expertRepository.saveExpertRecord(expert);
 
       FullScreenLoader.stopLoading();
 
-      //show success message
+      // show success message
       Loaders.successSnackBar(
           title: "Congratulations",
           message: "Your account has been created! Verify email to continue");
