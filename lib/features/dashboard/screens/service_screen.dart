@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/accomodation/screens/accomodation_listing_screen.dart';
 import 'package:helpinghand/features/job/screens/job_listing.dart';
 
 import '../../../common/widgets/submit_button.dart';
@@ -69,7 +70,11 @@ class ServiceListScreen extends StatelessWidget {
                             },
                               child: IndividualService("Jobs","assets/job.jpg")),
                           const SizedBox(height: 30,),
-                          IndividualService("Accomodation","assets/accomodation.jpg"),
+                          InkWell(
+                              onTap: (){
+                                Get.to(()=>const AccomodationListingScreen());
+                              },
+                              child: IndividualService("Accomodation","assets/accomodation.jpg")),
 
                         ],
                       ),]

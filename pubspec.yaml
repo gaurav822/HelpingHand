@@ -87,7 +87,6 @@ flutter:
      - assets/icons/verify_document.jpg
      - assets/welcome_bot.jpg
      - assets/profile.jpg
-     - assets/star.png
      - assets/abn.jpg
      - assets/police.jpg
      - assets/job.jpg

@@ -4,6 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
 import 'package:helpinghand/features/authentication/controllers/login/login_controller.dart';
 import 'Utils/securestorage/secure_storage_service.dart';
 import 'bindings/general_bindings.dart';
@@ -28,6 +29,7 @@ Future<void> main() async{
   Get.put(SecureStorageService());
   Get.put(LoginController());
   Get.put(AuthenticationRepository());
+  Get.put(ExpertRepository());
 
   runApp(const MyApp());
 }

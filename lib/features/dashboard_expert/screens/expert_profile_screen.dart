@@ -68,7 +68,7 @@ class ExpertProfileScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset("assets/star.png"),
+                          Image.asset("assets/rating_5.png"),
                           SizedBox(width: 10,),
                           Text("5/5"),
                         ],
@@ -100,12 +100,12 @@ class ExpertProfileScreen extends StatelessWidget {
                   SizedBox(height: 20,),
                   Text("Rida Zahoor : Great service!"),
                   SizedBox(height: 5,),
-                  Image.asset("assets/star.png"),
+                  Image.asset("assets/rating_5.png"),
 
                   SizedBox(height: 20,),
                   Text("Bishal : Got my TFN ready quickly!"),
                   SizedBox(height: 5,),
-                  Image.asset("assets/star.png"),
+                  Image.asset("assets/rating_5.png"),
 
                   SizedBox(height: 100,),
 

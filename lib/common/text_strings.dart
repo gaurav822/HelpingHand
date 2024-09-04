@@ -54,6 +54,20 @@ static const String alreadyAcc = "Already have an account?";
 static const String signIn = "Sign In";
 static const String shortBio = "Short Bio";
 
+  static const String serviceApp="Service App";
+
+  static var fullName="Full Name";
+
+  static var visaStatus = "Visa Status";
+
+  static var course="Course";
+
+  static var gradDate ="Graduation Date";
+
+  static var uploadResume="Upload resume";
+
+  static String jobApplication="Job Application";
+
 
 
 }

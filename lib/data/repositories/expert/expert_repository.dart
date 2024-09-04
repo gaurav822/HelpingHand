@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../Utils/exceptions/api_exceptions.dart';
 import '../../../Utils/securestorage/secure_storage_service.dart';
+import '../../../features/service/models/expert_list_model.dart';
 
 class ExpertRepository extends GetxController {
   static ExpertRepository get instance => Get.find();
@@ -39,6 +40,41 @@ class ExpertRepository extends GetxController {
           500, e.message); // Customize as per your error handling
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<List<ExpertListModel>> getExperts()async{
+    final url = Uri.parse('${AppConstants.baseUrl}/user/experts');
+    final token = await secureStorageService.read(AppConstants.accessToken);
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token!
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Decode the JSON response body
+        final jsonResponse = json.decode(response.body);
+
+        // Convert the decoded JSON to a StudentProfile object
+        final expertList = expertListModelFromJson(response.body);
+        print(expertList);
+        // Return the StudentProfile object
+        return expertList;
+      } else {
+        // Handle server errors
+        throw ApiException(response.statusCode, response.body);
+      }
+    } on http.ClientException catch (e) {
+      throw ApiException(
+          500, e.message); // Customize as per your error handling
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Something went wrong, Please try again');
     }
   }
 }

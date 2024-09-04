@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:helpinghand/Utils/rating_mapper.dart';
+import 'package:helpinghand/features/service/models/expert_list_model.dart';
 
 import '../../core/app_style.dart';
 
 class ExpertWidget extends StatelessWidget {
-  const ExpertWidget({super.key});
+  final ExpertListModel expertListModel;
+  const ExpertWidget({super.key,required this.expertListModel});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +21,8 @@ class ExpertWidget extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Gaurav Dahal"),
-            SizedBox(height: 5,),
-            Image.asset("assets/star.png")
+            Text("${expertListModel.firstname} ${expertListModel.lastname}"),
+            Image.asset(RatingMapper(expertListModel.rating).assetPath,height: 40,width: 120,)
           ],
         ),
       ],

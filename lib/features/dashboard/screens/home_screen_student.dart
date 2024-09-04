@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/dashboard/controllers/dashboard_controller.dart';
 import 'package:progress_line/progress_line.dart';
 
 import '../../../common/widgets/expert_widget.dart';
@@ -29,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   double _value = 0.0;
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DashboardController());
+
     return SingleChildScrollView(
         child: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -72,19 +75,35 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text("Recommended Experts for You",style: style16Medium(),),
                         SizedBox(height: 20,),
 
-                        for(int i=0;i<3;i++)
-                          Container(
-                            margin: EdgeInsets.only(bottom: 20),
-                              child: Row(
-                                children: [
-                                  ExpertWidget(),
-                                  Spacer(),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 16),
-                                    child: Text("Job Expert",style: style10(),),
-                                  )
-                                ],
-                              )),
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (controller.experts.isEmpty) {
+                            return const Center(
+                              child: Text("No experts found"),
+                            );
+                          } else {
+                            return Column(
+                              children: controller.experts.map((expert) {
+                                return Container(
+                                  margin: EdgeInsets.only(bottom: 20),
+                                  child: Row(
+                                    children: [
+                                      ExpertWidget(expertListModel: expert),
+                                      const Spacer(),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 16),
+                                        child: Text(expert.expertise.first, style: style10(),),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          }
+                        }),
 
 
                       ],
