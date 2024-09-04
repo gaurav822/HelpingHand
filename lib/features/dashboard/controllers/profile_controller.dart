@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/data/repositories/authentication/authentication_repository.dart';
+import 'package:helpinghand/data/repositories/student/student_repository.dart';
 import 'package:helpinghand/features/authentication/screens/signup/verify_account_screen.dart';
+import 'package:helpinghand/features/dashboard/models/student_profile.dart';
 
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
@@ -24,12 +27,23 @@ class ProfileController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    firstName.text = "Gaurav";
-    lastName.text = "Dahal";
-    schoolName.text="CQUniversity";
-    emailAddress.text="gaurav.dahal@cqumail.com";
-    nationality.text="Nepal";
-    phoneNumber.text="0493348778";
-    address.text = "Granville,NSW";
+
+    getStudentProfile();
+  }
+
+  Future<void> getStudentProfile() async {
+    final studentRepository = Get.put(StudentRepository());
+    StudentProfileResponseModel student = await studentRepository.getStudentProfile();
+    firstName.text = student.firstname;
+    lastName.text = student.lastname;
+    emailAddress.text = student.email;
+    schoolName.text=student.school;
+    nationality.text = student.nationality;
+    phoneNumber.text = student.phoneNumber;
+    address.text = student.address;
+  }
+
+  Future<void> logout()async{
+    await AuthenticationRepository.instance.logout();
   }
 }

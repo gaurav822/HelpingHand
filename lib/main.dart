@@ -4,6 +4,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/authentication/controllers/login/login_controller.dart';
+import 'Utils/securestorage/secure_storage_service.dart';
 import 'bindings/general_bindings.dart';
 import 'core/app_theme.dart';
 import 'core/colors/light_theme_color.dart';
@@ -23,7 +25,8 @@ Future<void> main() async{
 
   //await splash until other items load
   FlutterNativeSplash.preserve(widgetsBinding: widgetBinding);
-
+  Get.put(SecureStorageService());
+  Get.put(LoginController());
   Get.put(AuthenticationRepository());
 
   runApp(const MyApp());

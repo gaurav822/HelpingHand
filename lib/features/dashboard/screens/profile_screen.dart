@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/authentication/screens/login/login_screen.dart';
 import 'package:helpinghand/features/dashboard/controllers/profile_controller.dart';
@@ -34,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text("Edit Profile",style: style20Bold(),),
-        leading: const Icon(Icons.arrow_back_ios),
+
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -115,12 +116,14 @@ class ProfileScreen extends StatelessWidget {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red
                                   ),
-                                    onPressed: (){
+                                    onPressed: ()async{
+                                    await controller.logout();
                                     Get.offAll(()=>const LoginScreen());
+                                    Fluttertoast.showToast(msg: "Logout Successful");
                                     }, child: const Text("Logout")),
                             ),
                           ),
-                          SizedBox(height: 80,)
+                          const SizedBox(height: 80,)
 
                         ],
                       )

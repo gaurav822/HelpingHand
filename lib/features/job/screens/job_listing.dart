@@ -11,19 +11,27 @@ class JobListingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text("Local Jobs",style: style20Bold(),),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios), // The back arrow icon
+          onPressed: () {
+            Navigator.pop(context); // Navigate back
+          },
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child:  Padding(
             padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text("Local Jobs",style: style20Bold(),),
-            
-                SizedBox(height: 20,),
-            
+
                 for(int i=0;i<5;i++)
                   JobCard(),
-
 
               ],
             ),

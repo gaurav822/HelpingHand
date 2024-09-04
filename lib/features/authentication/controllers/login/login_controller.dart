@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:helpinghand/Utils/constants.dart';
 import 'package:helpinghand/features/dashboard/screens/student_dashboard.dart';
 import 'package:helpinghand/features/dashboard_expert/screens/expert_dashboard.dart';
 
 import '../../../../Utils/popups/full_screen_loader.dart';
+import '../../../../Utils/securestorage/secure_storage_service.dart';
 import '../../../../common/loader/loaders.dart';
 import '../../../../core/network/network_manager.dart';
 import '../../../../data/repositories/authentication/authentication_repository.dart';
@@ -12,6 +15,8 @@ import '../../screens/signup/verify_account_screen.dart';
 
 class LoginController extends GetxController {
   static LoginController get instance => Get.find();
+
+  final SecureStorageService secureStorageService = Get.find<SecureStorageService>();
 
   //variables
   final rememberMe = false.obs;
@@ -63,7 +68,8 @@ class LoginController extends GetxController {
          navigateBasedOnUserType(userType);
       }
       else{
-        Get.offAll(() => const VerifyAccountScreen(email: "testemail",));
+        String? userEmail = await secureStorageService.read(AppConstants.userEmail);
+        Get.offAll(() => VerifyAccountScreen(email: userEmail));
       }
 
       //
@@ -74,9 +80,7 @@ class LoginController extends GetxController {
   }
 
   void navigateBasedOnUserType(String userType) {
-    Loaders.successSnackBar(
-        title: "Login Successful",
-        message: "");
+    Fluttertoast.showToast(msg: "Login Successful!");
     if (userType == 'Student') {
 
       Get.offAll(() => StudentDashboard(menuScreenContext: Get.context!));

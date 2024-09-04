@@ -53,10 +53,10 @@ class ExpertHomeScreen extends StatelessWidget {
                           SizedBox(height: 10,),
                           Column(
                             children: [
-                              for (int i=0;i<2;i++)
-                                Container(
-                                    margin: EdgeInsets.only(bottom: 20),
-                                    child: SvgPicture.asset("assets/frame.svg")),
+                              // for (int i=0;i<2;i++)
+                                // Container(
+                                //     margin: EdgeInsets.only(bottom: 20),
+                                //     child: SvgPicture.asset("assets/frame.svg")),
 
                             ],
                           ),

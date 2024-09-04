@@ -5,6 +5,7 @@ import 'package:helpinghand/features/job/screens/job_listing.dart';
 
 import '../../../common/widgets/submit_button.dart';
 import '../../../core/app_style.dart';
+import '../../service/screens/service_request_screen.dart';
 
 
 class ServiceListScreen extends StatelessWidget {
@@ -37,13 +38,30 @@ class ServiceListScreen extends StatelessWidget {
                         Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          IndividualService("Tax File Number (TFN)","assets/tfn.jpg"),
+                          InkWell(
+                              onTap: (){
+                                Get.to(()=>const ServiceRequestScreen(serviceName: "TFN",));
+                              },
+                              child: IndividualService("Tax File Number (TFN)","assets/tfn.jpg")),
                           const SizedBox(height: 30,),
-                          IndividualService("Australia B. Number (ABN)","assets/abn.jpg"),
+                          InkWell(
+                            onTap: (){
+                              Get.to(()=>const ServiceRequestScreen(serviceName: "ABN",));
+                            },
+                              child: IndividualService("Australia B. Number (ABN)","assets/abn.jpg")),
                           const SizedBox(height: 30,),
-                          IndividualService("Bank Setup","assets/bank.jpg"),
+                          InkWell(
+                            onTap: (){
+                              Get.to(()=>const ServiceRequestScreen(serviceName: "Bank Setup",));
+                            },
+                              child: IndividualService("Bank Setup","assets/bank.jpg")),
                           const SizedBox(height: 30,),
-                          IndividualService("Police Check Report","assets/police.jpg"),
+                          InkWell(
+                            onTap: (){
+                              Get.to(()=>const ServiceRequestScreen(serviceName: "Police Report",));
+
+                            },
+                              child: IndividualService("Police Check Report","assets/police.jpg")),
                           const SizedBox(height: 30,),
                           InkWell(
                             onTap: (){

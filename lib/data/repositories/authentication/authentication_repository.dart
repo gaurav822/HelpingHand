@@ -1,15 +1,19 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:helpinghand/Utils/securestorage/secure_storage_service.dart';
 import 'package:helpinghand/features/dashboard/screens/student_dashboard.dart';
 import 'package:helpinghand/features/dashboard_expert/screens/expert_dashboard.dart';
 import 'package:path/path.dart';
 import '../../../Utils/constants.dart';
 import '../../../Utils/exceptions/api_exceptions.dart';
+import '../../../features/authentication/controllers/login/login_controller.dart';
 import '../../../features/authentication/screens/login/login_screen.dart';
 import '../../../features/authentication/screens/onboarding/onboarding.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +22,8 @@ import '../../../features/authentication/screens/signup/verify_account_screen.da
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
+
+  final SecureStorageService secureStorageService = Get.find<SecureStorageService>();
 
   //variable
   final deviceStorage = GetStorage();
@@ -32,7 +38,16 @@ class AuthenticationRepository extends GetxController {
   //function to show relavant screen
 
   screenRedirect() async {
-    _handleFirstTimeLaunch();
+    String? accessToken = await secureStorageService.read(AppConstants.accessToken);
+    if(accessToken!=null){
+      String? userType = await secureStorageService.read(AppConstants.userType);
+      if (userType != null) {
+         LoginController.instance.navigateBasedOnUserType(userType);
+      }
+    }
+    else{
+      _handleFirstTimeLaunch();
+    }
   }
 
   _handleFirstTimeLaunch(){
@@ -65,12 +80,17 @@ class AuthenticationRepository extends GetxController {
         bool isAccountVerified = json.decode(response.body)['user']["isVerified"] as bool;
 
         if(isAccountVerified){
+
+          //saveAccessToken
+          String token = json.decode(response.body)['token'] as String;
+          secureStorageService.write(AppConstants.accessToken,token);
           // Handle success
           String userType = _fetchUserType(response.body);
           return userType;
         }
         else{
-           return '';
+          secureStorageService.write(AppConstants.userEmail, json.decode(response.body)['user']["email"] as  String);
+          return '';
         }
 
       } else {
@@ -90,9 +110,14 @@ class AuthenticationRepository extends GetxController {
   // Extract the user type from the response body
   String _fetchUserType(String responseBody) {
     final Map<String, dynamic> decodedResponse = json.decode(responseBody);
-    return decodedResponse['user']['userType'] as String;
+    String userType =  decodedResponse['user']['userType'] as String;
+    String userEmail =  decodedResponse['user']['email'] as String;
+    secureStorageService.write(AppConstants.userType, userType);
+    return userType;
   }
 
+  Future<void> logout() async{
+    secureStorageService.delete(AppConstants.accessToken);
+  }
 
-  // Navigate based on user type
 }
