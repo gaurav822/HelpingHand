@@ -6,12 +6,15 @@ import 'package:helpinghand/core/colors/light_theme_color.dart';
 import 'package:helpinghand/features/service/screens/service_application_form.dart';
 
 import '../../../core/app_color.dart';
+import '../../../data/repositories/dummy_data/dummy_data.dart';
 
 class AccomodationListingScreen extends StatelessWidget {
   const AccomodationListingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, String>> accomodations =  DummyData().getLocalAccommodation();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -30,12 +33,11 @@ class AccomodationListingScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
-              children: [
-
-                for(int i=0;i<5;i++)
-                  AccomodationCard(),
-
-              ],
+              children: accomodations.map((accomodation) {
+                return Container(
+                  child: AccomodationCard(accomodation), // Assuming taskProgressFrame takes a task as input
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -43,33 +45,35 @@ class AccomodationListingScreen extends StatelessWidget {
     );
   }
 
-  Widget AccomodationCard(){
-    return InkWell(
+  Widget AccomodationCard(Map<String,String> accomodation){
+    return GestureDetector(
       onTap: (){
+        Get.to(()=> const ServiceApplicationForm(serviceType:"accomodation"));
+
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          padding: EdgeInsets.all(25),
-          margin: EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.all(25),
+          margin: const EdgeInsets.only(bottom: 20),
           width: double.infinity,
-          color: Color(0xFFE3EEDA),
+          color: const Color(0xFFE3EEDA),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Text("Single bed room",style: style20Bold(),),
-                  Spacer(),
-                  Text("\$200 per week",style: style14(),),
+                  Text(accomodation['roomName']!,style: style20Bold(),),
+                  const Spacer(),
+                  Text(accomodation["rentPrice"]!,style: style14(),),
 
                 ],
               ),
-              SizedBox(height: 3,),
-              Text("Ashfield, NSW"),
+              const SizedBox(height: 3,),
+              Text(accomodation['roomLocation']!),
 
-              SizedBox(height: 20,),
-              Text("2 days ago",style: style16Medium(color: ThemeColor.colorPrimary),)
+              const SizedBox(height: 20,),
+              Text(accomodation['datePosted']!,style: style16Medium(color: ThemeColor.colorPrimary),)
             ],
           ),
         ),

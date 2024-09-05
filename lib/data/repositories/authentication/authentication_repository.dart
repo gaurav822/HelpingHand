@@ -112,6 +112,8 @@ class AuthenticationRepository extends GetxController {
     final Map<String, dynamic> decodedResponse = json.decode(responseBody);
     String userType =  decodedResponse['user']['userType'] as String;
     secureStorageService.write(AppConstants.userType, userType);
+    secureStorageService.write(AppConstants.userId, decodedResponse['user']['_id'] as String);
+
     return userType;
   }
 

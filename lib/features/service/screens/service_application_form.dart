@@ -12,7 +12,8 @@ import '../../authentication/controllers/signup/signup_controller.dart';
 import '../controllers/job_app_form_controller.dart';
 
 class ServiceApplicationForm extends StatefulWidget {
-  const ServiceApplicationForm({super.key});
+  final String serviceType;
+  const ServiceApplicationForm({super.key,required this.serviceType});
 
   @override
   _ServiceApplicationFormState createState() => _ServiceApplicationFormState();
@@ -34,7 +35,7 @@ class _ServiceApplicationFormState extends State<ServiceApplicationForm> {
                 SizedBox(height: 20,),
                 Center(
                   child: Text(
-                    GTexts.jobApplication,
+                    this.widget.serviceType=="job"?GTexts.jobApplication:"Accomodation Application",
                     style: style20Medium(),
                   ),
                 ),
@@ -51,12 +52,12 @@ class _ServiceApplicationFormState extends State<ServiceApplicationForm> {
                     const SizedBox(height: 10),
 
                     // Visa Status
-                    FieldWidget(
+                    this.widget.serviceType=="job"?FieldWidget(
                       label: GTexts.visaStatus,
                       controller: controller.visaStatus,
                       validator: (value) =>
                           FormValidator.validateEmptyText(GTexts.visaStatus, value),
-                    ),
+                    ):const SizedBox(),
                     const SizedBox(height: 10),
 
                     // Contact Information
@@ -78,27 +79,27 @@ class _ServiceApplicationFormState extends State<ServiceApplicationForm> {
 
                     // Education
                     FieldWidget(
-                      label: GTexts.uniColg,
+                      label: this.widget.serviceType=="job"? GTexts.uniColg:"Preferred Move In Date",
                       controller: controller.schoolName,
                       validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.school,value),
+                          FormValidator.validateEmptyText(this.widget.serviceType=="job"? GTexts.school:"Preferred Move In Date",value),
                     ),
                     const SizedBox(height: 10),
 
                     FieldWidget(
-                      label: GTexts.course,
+                      label:  this.widget.serviceType=="job"?GTexts.course:"Budget Range",
                       controller: controller.course,
                       validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.course,value),
+                          FormValidator.validateEmptyText(this.widget.serviceType=="job"? GTexts.course:"Budget Range",value),
                     ),
                     const SizedBox(height: 10),
 
-                    FieldWidget(
+                    this.widget.serviceType=="job"?FieldWidget(
                       label: GTexts.gradDate,
                       controller: controller.gradDate,
                       validator: (value) =>
                           FormValidator.validateEmptyText(GTexts.gradDate,value),
-                    ),
+                    ):SizedBox(),
                     const SizedBox(height: 10),
 
 
@@ -106,7 +107,7 @@ class _ServiceApplicationFormState extends State<ServiceApplicationForm> {
 
                     // Resume Upload
                     ImagePickerWidget(
-                        title: GTexts.uploadResume,
+                        title:  this.widget.serviceType=="job"?GTexts.uploadResume:"Upload Identification Proof (Passport/Driver's Licence)",
                         onImagePicked: (value)=>{
                           setState(() {
                             // Handle resume upload
@@ -117,9 +118,7 @@ class _ServiceApplicationFormState extends State<ServiceApplicationForm> {
                     SubmitButton(
                       text: GTexts.submit,
                       onPressedCallback: () {
-                        if (controller.formKey.currentState?.validate() == true) {
-                          // Handle form submission
-                        }
+                        controller.submitForm();
                       },
                     ),
                   ],

@@ -48,7 +48,7 @@ class ServiceRequestScreen extends StatelessWidget {
                       const Spacer(),
                       InkWell(
                           onTap: (){
-                            Fluttertoast.showToast(msg: "Request Sent Successfully !!");
+                            controller.sendServiceRequest(expert.id);
                           },
                           child: Image.asset("assets/icons/request.png"))
                     ],

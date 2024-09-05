@@ -3,5 +3,6 @@ class AppConstants {
   static const String accessToken = 'accessToken';
   static const String userType = 'UserType';
   static const String userEmail = 'UserEmail';
+  static const String userId = 'UserId';
 
 }

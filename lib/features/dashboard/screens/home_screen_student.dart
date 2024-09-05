@@ -8,6 +8,7 @@ import '../../../common/widgets/expert_widget.dart';
 import '../../../common/widgets/submit_button.dart';
 import '../../../core/app_color.dart';
 import '../../../core/app_style.dart';
+import '../../../data/repositories/dummy_data/dummy_data.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -28,9 +29,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double _value = 0.0;
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(DashboardController());
+    List<Map<String, dynamic>> tasks =  DummyData().getTasksList();
 
     return SingleChildScrollView(
         child: SizedBox(
@@ -63,13 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text("Your Task at a Glance",style: style16Medium(),),
                         SizedBox(height: 10,),
                         Column(
-                          children: [
-                            for (int i=0;i<2;i++)
-                              Container(
-                                margin: EdgeInsets.only(bottom: 20),
-                                  child: taskProgressFrame()),
-
-                          ],
+                          children: tasks.map((task) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 20),
+                              child: taskProgressFrame(task), // Assuming taskProgressFrame takes a task as input
+                            );
+                          }).toList(),
                         ),
                         SizedBox(height: 20,),
                         Text("Recommended Experts for You",style: style16Medium(),),
@@ -114,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )));
   }
 
-  Widget taskProgressFrame(){
+  Widget taskProgressFrame(Map<String, dynamic> task){
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
       child: Container(
@@ -132,13 +134,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Container(
                   margin: const EdgeInsets.only(left: 10),
-                    child: Text("Tax File Number (TFN",style: style14Semibold(),)),
+                    child: Text(task["taskName"],style: style14Semibold(),)),
                 Row(
 
                   children: [
                     ProgressLineWidget(
-                      end: Text("${(_value * 100).toStringAsFixed(0)}%"),
-                      percent: 0.8,
+                      end: Text("${(task['taskProgress'] * 100).toStringAsFixed(0)}%"),
+                      percent: task["taskProgress"],
                       lineWidth: 20,
                       lineColors: const [
                         Colors.green,

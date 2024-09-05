@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:helpinghand/core/app_style.dart';
 
 import '../../../core/app_color.dart';
+import '../../../data/repositories/dummy_data/dummy_data.dart';
 import '../../service/screens/service_application_form.dart';
 
 class JobListingScreen extends StatelessWidget {
@@ -10,6 +11,8 @@ class JobListingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, String>> jobs =  DummyData().getLocalJobs();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -28,12 +31,11 @@ class JobListingScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
-              children: [
-
-                for(int i=0;i<5;i++)
-                  JobCard(),
-
-              ],
+              children: jobs.map((job) {
+                return Container(
+                  child: JobCard(job), // Assuming taskProgressFrame takes a task as input
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -41,30 +43,30 @@ class JobListingScreen extends StatelessWidget {
     );
   }
 
-  Widget JobCard(){
-    return InkWell(
+  Widget JobCard(Map<String,String> job){
+    return GestureDetector(
       onTap: (){
-        Get.to(()=> const ServiceApplicationForm());
+        Get.to(()=> const ServiceApplicationForm(serviceType:"job"));
 
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          padding: EdgeInsets.all(25),
-          margin: EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.all(25),
+          margin: const EdgeInsets.only(bottom: 20),
           width: double.infinity,
-          color: Color(0xFFE3EEDA),
+          color: const Color(0xFFE3EEDA),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Bartender",style: style20Bold(),),
+              Text(job["jobRole"]!,style: style20Bold(),),
               SizedBox(height: 4,),
-              Text("Club Asfield",style: style16Medium(),),
+              Text(job["companyName"]!,style: style16Medium(),),
               SizedBox(height: 3,),
-              Text("Ashfield, NSW"),
+              Text(job["jobLocation"]!),
 
               SizedBox(height: 20,),
-              Text("2 days ago",style: style16Medium(color: ThemeColor.colorPrimary),)
+              Text(job["datePosted"]!,style: style16Medium(color: ThemeColor.colorPrimary),)
             ],
           ),
         ),
