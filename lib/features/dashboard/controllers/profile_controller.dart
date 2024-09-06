@@ -23,6 +23,8 @@ class ProfileController extends GetxController {
 
   final formKey = GlobalKey<FormState>();
 
+  var isLoading = true.obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -32,15 +34,22 @@ class ProfileController extends GetxController {
   }
 
   Future<void> getStudentProfile() async {
-    final studentRepository = Get.put(StudentRepository());
-    StudentProfileResponseModel student = await studentRepository.getStudentProfile();
-    firstName.text = student.firstname;
-    lastName.text = student.lastname;
-    emailAddress.text = student.email;
-    schoolName.text=student.school;
-    nationality.text = student.nationality;
-    phoneNumber.text = student.phoneNumber;
-    address.text = student.address;
+    try {
+      isLoading(true); //
+      final studentRepository = Get.put(StudentRepository());
+      StudentProfileResponseModel student = await studentRepository
+          .getStudentProfile();
+      firstName.text = student.firstname;
+      lastName.text = student.lastname;
+      emailAddress.text = student.email;
+      schoolName.text=student.school;
+      nationality.text = student.nationality;
+      phoneNumber.text = student.phoneNumber;
+      address.text = student.address;
+    }
+    finally{
+      isLoading(false); // Stop loading
+    }
   }
 
   Future<void> logout()async{

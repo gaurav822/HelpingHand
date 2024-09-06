@@ -13,7 +13,6 @@ import '../../../common/widgets/field_widget.dart';
 import '../../../common/widgets/submit_button.dart';
 import '../../../core/app_style.dart';
 
-
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
     super.key,
@@ -34,102 +33,116 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text("Edit Profile",style: style20Bold(),),
-
+        title: Text(
+          "Edit Profile",
+          style: style20Bold(),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-          child:  Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset("assets/profile.jpg",height: 100,width: 100,)),
-                              const Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Icon(Icons.camera_alt),
-                              ),
-
-                            ],
-                          ),
-                          SizedBox(height: 20,),
-                          FieldWidget(
-                            label: GTexts.firstName,
-                            controller: controller.firstName,
-                            validator: (value) =>
-                                FormValidator.validateEmptyText(GTexts.firstName, value),
-                          ),
-                          const SizedBox(height: 10),
-                          FieldWidget(
-                            label: GTexts.lastName,
-                            controller: controller.lastName,
-                            validator: (value) =>
-                                FormValidator.validateEmptyText(GTexts.lastName, value),
-                          ),
-                          const SizedBox(height: 10),
-                          FieldWidget(
-                            label: GTexts.uniColg,
-                            controller: controller.schoolName,
-                            validator: (value) =>
-                                FormValidator.validateEmptyText(GTexts.school,value),
-                          ),
-                          const SizedBox(height: 10),
-                          FieldWidget(
-                            label: GTexts.schoolMail,
-                            controller: controller.emailAddress,
-                            validator: (value) =>
-                                FormValidator.validateEmail(value),
-                          ),
-                          const SizedBox(height: 10),
-                          FieldWidget(
-                            label: GTexts.nationality,
-                            controller: controller.nationality,
-                            validator: (value) =>
-                                FormValidator.validateEmptyText( GTexts.nationality,value),
-                          ),
-                          const SizedBox(height: 10),
-                          FieldWidget(
-                            label: GTexts.phoneNumber,
-                            controller: controller.phoneNumber,
-                            validator: (value) =>
-                                FormValidator.validatePhoneNumber(value),
-                            keyboardType: TextInputType.number,
-                          ),
-                          const SizedBox(height: 10),
-
-                          FieldWidget(
-                            label: GTexts.address,
-                            controller: controller.address,
-                            validator: (value) =>
-                                FormValidator.validateEmptyText(GTexts.address, value),
-                          ),
-                            const SizedBox(height: 40,),
-                          SizedBox(
-                            width: double.infinity,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 40),
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red
-                                  ),
-                                    onPressed: ()async{
-                                    await controller.logout();
-                                    Get.offAll(()=>const LoginScreen());
-                                    Fluttertoast.showToast(msg: "Logout Successful");
-                                    }, child: const Text("Logout")),
-                            ),
-                          ),
-                          const SizedBox(height: 80,)
-
-                        ],
-                      )
-                  ),
-                ),
-
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Container(
+                height: MediaQuery.of(context).size.height,
+                child: const Center(child: CircularProgressIndicator()));
+          } else {
+            return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.asset(
+                              "assets/profile.jpg",
+                              height: 100,
+                              width: 100,
+                            )),
+                        const Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Icon(Icons.camera_alt),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    FieldWidget(
+                      label: GTexts.firstName,
+                      controller: controller.firstName,
+                      validator: (value) => FormValidator.validateEmptyText(
+                          GTexts.firstName, value),
+                    ),
+                    const SizedBox(height: 10),
+                    FieldWidget(
+                      label: GTexts.lastName,
+                      controller: controller.lastName,
+                      validator: (value) => FormValidator.validateEmptyText(
+                          GTexts.lastName, value),
+                    ),
+                    const SizedBox(height: 10),
+                    FieldWidget(
+                      label: GTexts.uniColg,
+                      controller: controller.schoolName,
+                      validator: (value) =>
+                          FormValidator.validateEmptyText(GTexts.school, value),
+                    ),
+                    const SizedBox(height: 10),
+                    FieldWidget(
+                      label: GTexts.schoolMail,
+                      controller: controller.emailAddress,
+                      validator: (value) => FormValidator.validateEmail(value),
+                    ),
+                    const SizedBox(height: 10),
+                    FieldWidget(
+                      label: GTexts.nationality,
+                      controller: controller.nationality,
+                      validator: (value) => FormValidator.validateEmptyText(
+                          GTexts.nationality, value),
+                    ),
+                    const SizedBox(height: 10),
+                    FieldWidget(
+                      label: GTexts.phoneNumber,
+                      controller: controller.phoneNumber,
+                      validator: (value) =>
+                          FormValidator.validatePhoneNumber(value),
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 10),
+                    FieldWidget(
+                      label: GTexts.address,
+                      controller: controller.address,
+                      validator: (value) => FormValidator.validateEmptyText(
+                          GTexts.address, value),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red),
+                            onPressed: () async {
+                              await controller.logout();
+                              Get.offAll(() => const LoginScreen());
+                              Fluttertoast.showToast(msg: "Logout Successful");
+                            },
+                            child: const Text("Logout")),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 80,
+                    )
+                  ],
+                ));
+          }
+        }),
+      ),
     );
   }
 }

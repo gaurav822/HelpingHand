@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:helpinghand/Utils/securestorage/secure_storage_service.dart';
@@ -13,6 +14,7 @@ import 'package:helpinghand/features/dashboard_expert/screens/expert_dashboard.d
 import 'package:path/path.dart';
 import '../../../Utils/constants.dart';
 import '../../../Utils/exceptions/api_exceptions.dart';
+import '../../../common/loader/loaders.dart';
 import '../../../features/authentication/controllers/login/login_controller.dart';
 import '../../../features/authentication/screens/login/login_screen.dart';
 import '../../../features/authentication/screens/onboarding/onboarding.dart';
@@ -38,19 +40,36 @@ class AuthenticationRepository extends GetxController {
   //function to show relavant screen
 
   screenRedirect() async {
+
     String? accessToken = await secureStorageService.read(AppConstants.accessToken);
     if(accessToken!=null){
-      String? userType = await secureStorageService.read(AppConstants.userType);
-      if (userType != null) {
-         LoginController.instance.navigateBasedOnUserType(userType);
-      }
+      checkSession(accessToken);
     }
     else{
       _handleFirstTimeLaunch();
     }
   }
 
+  void checkSession(String accessToken) async {
+    bool tokenValid = await secureStorageService.isTokenValid();
+
+    if (tokenValid) {
+      // Redirect to Dashboard
+        String? userType = await secureStorageService.read(AppConstants.userType);
+        if (userType != null) {
+          LoginController.instance.navigateBasedOnUserType(userType);
+        }
+    } else {
+      // Token expired, clear storage and redirect to Login
+      await secureStorageService.deleteAll();
+      Loaders.errorSnackBar(title: 'Session Expired!', message: "Logging out...");
+      Get.offAll(const LoginScreen());// Clear stored tokens
+    }
+  }
+
+
   _handleFirstTimeLaunch(){
+    print("Coming here");
     //Local storage
     deviceStorage.writeIfNull('isFirstTime', true);
     //Check if its the first time launching the app
@@ -83,7 +102,7 @@ class AuthenticationRepository extends GetxController {
 
           //saveAccessToken
           String token = json.decode(response.body)['token'] as String;
-          secureStorageService.write(AppConstants.accessToken,token);
+          secureStorageService.storeToken(token,86400);
           // Handle success
           String userType = _fetchUserType(response.body);
           return userType;
