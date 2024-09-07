@@ -50,7 +50,8 @@ class ExpertHomeScreen extends StatelessWidget {
                           const SizedBox(height: 30,),
 
                           Text("Your Active Tasks",style: style16Medium(),),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 20,),
+                          Center(child: Text("No Tasks Found")),
                           Column(
                             children: [
                               // for (int i=0;i<2;i++)
@@ -63,11 +64,14 @@ class ExpertHomeScreen extends StatelessWidget {
                           SizedBox(height: 20,),
                           Text("New Student Request",style: style16Medium(),),
                           SizedBox(height: 20,),
+                          Center(child: Text("No Requests Found")),
+                          SizedBox(height: 20,),
                           // ChatRequestWidget(),
 
-                          SizedBox(height: 20,),
+                          const SizedBox(height: 20,),
                           Text("Recent Notifications",style: style16Medium(),),
-
+                          const SizedBox(height: 20,),
+                          const Center(child: Text("No Notifications Found")),
 
                         ],
                       ),]

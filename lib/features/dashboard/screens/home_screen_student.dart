@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/Utils/progressMapper.dart';
 import 'package:helpinghand/features/dashboard/controllers/dashboard_controller.dart';
+import 'package:helpinghand/features/service/controllers/service_controller.dart';
+import 'package:helpinghand/features/service/models/requested_service.dart';
 import 'package:progress_line/progress_line.dart';
 
 import '../../../common/widgets/expert_widget.dart';
@@ -33,6 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(DashboardController());
+    final serviceController = Get.put(ServiceController());
+
     List<Map<String, dynamic>> tasks =  DummyData().getTasksList();
 
     return SingleChildScrollView(
@@ -64,16 +69,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 30,),
 
                         Text("Your Task at a Glance",style: style16Medium(),),
-                        SizedBox(height: 10,),
-                        Column(
-                          children: tasks.map((task) {
-                            return Container(
-                              margin: EdgeInsets.only(bottom: 20),
-                              child: taskProgressFrame(task), // Assuming taskProgressFrame takes a task as input
+                        const SizedBox(height: 10,),
+                        Obx(() {
+                          if (serviceController.isLoading.value) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
-                          }).toList(),
-                        ),
-                        SizedBox(height: 20,),
+                          } else if (serviceController.serviceRequests.isEmpty) {
+                            return const Center(
+                              child: Text("No Tasks found"),
+                            );
+                          } else {
+                            return Column(
+                              children: serviceController.serviceRequests.map((service) {
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 20),
+                                  child: taskProgressFrame(service)
+                                );
+                              }).toList(),
+                            );
+                          }
+                        }),
+                        const SizedBox(height: 20,),
                         Text("Recommended Experts for You",style: style16Medium(),),
                         SizedBox(height: 20,),
 
@@ -116,55 +133,64 @@ class _HomeScreenState extends State<HomeScreen> {
             )));
   }
 
-  Widget taskProgressFrame(Map<String, dynamic> task){
+  Widget taskProgressFrame(RequestedService service){
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
       child: Container(
         padding: const EdgeInsets.all(25),
         width: double.infinity,
         color: const Color(0xFFE3EEDA),
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.asset("assets/profile.jpg",height: 70,width: 70,)),
-            Column(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 10),
-                    child: Text(task["taskName"],style: style14Semibold(),)),
-                Row(
-
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Image.asset("assets/profile.jpg",height: 70,width: 70,)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ProgressLineWidget(
-                      end: Text("${(task['taskProgress'] * 100).toStringAsFixed(0)}%"),
-                      percent: task["taskProgress"],
-                      lineWidth: 20,
-                      lineColors: const [
-                        Colors.green,
-                      ],
-                      bgColor: Colors.grey.withOpacity(0.4),
-                      innerPadding: const EdgeInsets.all(20),
-                      width: 100,
-                      height: 60,
-                      callback: (value) {
-                        setState(() {
-                          _value = value;
-                        });
-                      },
+                    Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: Text(service.serviceTypeId.typename,style: style14Semibold(),)),
+                    Row(
 
-                    ),
-                    SizedBox(width: 20,),
-                    Text("View Details",style: style14Medium(),)
+                      children: [
+                        ProgressLineWidget(
+                          end: Text("${(ProgressMapper(service.status).progressVal * 100).toStringAsFixed(0)}%"),
+                          percent: ProgressMapper(service.status).progressVal,
+                          lineWidth: 20,
+                          lineColors: const [
+                            Colors.green,
+                          ],
+                          bgColor: Colors.grey.withOpacity(0.4),
+                          innerPadding: const EdgeInsets.all(20),
+                          width: 100,
+                          height: 60,
+                          callback: (value) {
+                            setState(() {
+                              _value = value;
+                            });
+                          },
+
+                        ),
+                        SizedBox(width: 20,),
+                        Text("View Details",style: style14Medium(),)
+                      ],
+                    )
                   ],
                 )
-              ],
-            )
 
+              ],
+            ),
+
+            Container(
+              margin: EdgeInsets.only(left: 10),
+                child: Text("${service.expertId.firstname} ${service.expertId.lastname}",style: style16(),))
           ],
-        ),
+        )
       ),
     );
   }

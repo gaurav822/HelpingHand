@@ -38,7 +38,7 @@ class ServiceController extends GetxController {
   Future<void> sendServiceRequest(String expertId) async{
     try {
       //start loading
-      FullScreenLoader.openLoadingDialog("Processing your information...");
+      FullScreenLoader.openLoadingDialog("Request for service...");
 
       final isConnected = await NetworkManager.instance.isConnected();
 

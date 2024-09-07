@@ -1,66 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:helpinghand/common/widgets/chat_request.dart';
-import 'package:helpinghand/features/service/controllers/service_controller.dart';
-
-import '../../../common/widgets/submit_button.dart';
-import '../../../core/app_style.dart';
+import 'package:helpinghand/core/colors/light_theme_color.dart';
 
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({
-    super.key,
-    required this.menuScreenContext,
-    required this.onScreenHideButtonPressed,
-    this.hideStatus = false,
-  });
+  final String userName;
 
-  final BuildContext menuScreenContext;
-  final VoidCallback onScreenHideButtonPressed;
-  final bool hideStatus;
+  ChatScreen({required this.userName});
 
   @override
   Widget build(BuildContext context) {
-    final serviceController = ServiceController.instance;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context); // Go back
+          },
+        ),
+        title: Text(userName),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: 2, // Dummy chat count
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: index % 2 == 0
+                        ? Alignment.centerLeft
+                        : Alignment.centerRight,
+                    child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: index % 2 == 0
+                            ? Colors.grey[300]
+                            : LightThemeColor.colorPrimary,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text('Hello how you doing $index',style: TextStyle(color: index%2!=0?Colors.white:Colors.black),),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          _buildMessageInputField(),
+        ],
+      ),
+    );
+  }
 
-    return SingleChildScrollView(
-        child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: SafeArea(
-              child: Obx(() {
-                if (serviceController.isLoading.value) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                else if (serviceController.serviceRequests.isEmpty) {
-                  return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset("assets/no_result.jpg"),
-                            const SizedBox(height: 20,),
-                            Text("Chats Unavailable",style: style20Bold(),),
-                            const SizedBox(height: 20,),
-                            const Text("Please request to connect with the expert  first !"),
-
-
-                          ],
-                        )
-
-                  );
-
-                } else {
-                  return Column(
-                    children: serviceController.serviceRequests.map((serviceReq) {
-                      return ChatRequestWidget(requestedService: serviceReq,);
-                    }).toList(),
-                  );
-                }
-              }),
-            )));
+  Widget _buildMessageInputField() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Row(
+        children: <Widget>[
+          const Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Write a message...",
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.send, color: LightThemeColor.colorPrimary),
+            onPressed: () {
+              // Send message action
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
+
