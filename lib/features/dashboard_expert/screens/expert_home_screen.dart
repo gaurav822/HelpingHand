@@ -63,7 +63,7 @@ class ExpertHomeScreen extends StatelessWidget {
                           SizedBox(height: 20,),
                           Text("New Student Request",style: style16Medium(),),
                           SizedBox(height: 20,),
-                          ChatRequestWidget(),
+                          // ChatRequestWidget(),
 
                           SizedBox(height: 20,),
                           Text("Recent Notifications",style: style16Medium(),),

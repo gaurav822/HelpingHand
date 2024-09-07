@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/service/controllers/service_controller.dart';
 import '../../../common/widgets/expert_widget.dart';
 import '../../../core/app_style.dart';
 import '../../dashboard/controllers/dashboard_controller.dart';
@@ -11,7 +12,8 @@ class ServiceRequestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DashboardController());
+    final controller = Get.put(ServiceController());
+    final dashController = DashboardController.instance;
 
     return  Scaffold(
       appBar: AppBar(
@@ -33,24 +35,26 @@ class ServiceRequestScreen extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (controller.experts.isEmpty) {
+          }
+          if (dashController.experts.isEmpty) {
             return const Center(
               child: Text("No experts found"),
             );
           } else {
             return Column(
-              children: controller.experts.map((expert) {
+              children: dashController.experts.map((expert) {
                 return Container(
                   margin: EdgeInsets.only(bottom: 20),
                   child: Row(
                     children: [
                       ExpertWidget(expertListModel: expert),
                       const Spacer(),
-                      InkWell(
-                          onTap: (){
-                            controller.sendServiceRequest(expert.id);
-                          },
-                          child: Image.asset("assets/icons/request.png"))
+                          controller.serviceRequests.any((service) => service.expertId == expert.id)?const Text("Request Sent"):
+                          InkWell(
+                              onTap: (){
+                                controller.sendServiceRequest(expert.id);
+                              },
+                              child: Image.asset("assets/icons/request.png"))
                     ],
                   ),
                 );

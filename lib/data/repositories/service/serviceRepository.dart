@@ -3,6 +3,7 @@ import 'package:helpinghand/Utils/constants.dart';
 import 'package:helpinghand/features/authentication/models/expert_model.dart';
 import 'package:helpinghand/features/authentication/models/student_model.dart';
 import 'package:helpinghand/features/dashboard/models/student_profile.dart';
+import 'package:helpinghand/features/service/models/requested_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
@@ -32,7 +33,7 @@ class ServiceRepository extends GetxController {
         body: json.encode({
           'studentId':studentId,
           'expertId':expertId,
-          'serviceTypeId':'66c72ca2b9c17c17a42ce2b8'
+          'serviceTypeId':'66dab399df286cc18e4ed4f5'
         }),
       );
 
@@ -50,4 +51,40 @@ class ServiceRepository extends GetxController {
       rethrow;
     }
   }
+
+  Future<List<RequestedService>> getServiceRequests() async {
+    final studentId = await secureStorageService.read(AppConstants.userId);
+    final url = Uri.parse('${AppConstants.baseUrl}/service/getRequestedServices').replace(queryParameters: {
+      'studentId': studentId,
+    },);
+    final token = await secureStorageService.read(AppConstants.accessToken);
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token':token!
+        },
+        body: json.encode({
+          'studentId':studentId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Handle success
+        print(response.body);
+        return requestedServiceFromJson(response.body);
+
+      } else {
+        // Handle server errors
+        throw ApiException(response.statusCode, response.body);
+      }
+    } on http.ClientException catch (e) {
+      throw ApiException(
+          500, e.message); // Customize as per your error handling
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }

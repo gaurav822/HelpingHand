@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       const Spacer(),
                                       Padding(
                                         padding: const EdgeInsets.only(right: 16),
-                                        child: Text(expert.expertise.first, style: style10(),),
+                                        child: Text(expert.expertise.first, style: style16(),),
                                       )
                                     ],
                                   ),
