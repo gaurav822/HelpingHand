@@ -131,13 +131,14 @@ class AuthenticationRepository extends GetxController {
     final Map<String, dynamic> decodedResponse = json.decode(responseBody);
     String userType =  decodedResponse['user']['userType'] as String;
     secureStorageService.write(AppConstants.userType, userType);
+    secureStorageService.write(AppConstants.userName, decodedResponse['user']['firstname'] as String);
     secureStorageService.write(AppConstants.userId, decodedResponse['user']['_id'] as String);
 
     return userType;
   }
 
   Future<void> logout() async{
-    secureStorageService.delete(AppConstants.accessToken);
+    secureStorageService.deleteAll();
   }
 
 }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/Utils/constants.dart';
+import 'package:helpinghand/features/dashboard_expert/controllers/expert_profile_controller.dart';
+import 'package:helpinghand/features/service/controllers/service_controller.dart';
 
+import '../../../Utils/securestorage/secure_storage_service.dart';
 import '../../../common/widgets/chat_request.dart';
 import '../../../common/widgets/submit_button.dart';
 import '../../../core/app_style.dart';
@@ -21,6 +25,8 @@ class ExpertHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ExpertProfileController());
+    final serviceController = Get.put(ServiceController());
     return SingleChildScrollView(
         child: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -31,50 +37,74 @@ class ExpertHomeScreen extends StatelessWidget {
                 const EdgeInsets.only(bottom: kBottomNavigationBarHeight),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                      children: [Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: [
-                              Text("Weclome, John",style: style16Medium(),),
-                              const SizedBox(width: 20,),
-                              Image.asset("assets/welcome_bot.jpg")
-                            ],
-                          ),
-                          const SizedBox(height: 20,),
-                          Text("Thank you for being a part of Helping Hand. Manage your services, connect with students, and grow your professional network.",
-
-                            style: style14(),textAlign: TextAlign.left,),
-
-                          const SizedBox(height: 30,),
-
-                          Text("Your Active Tasks",style: style16Medium(),),
-                          SizedBox(height: 20,),
-                          Center(child: Text("No Tasks Found")),
+                  child: RefreshIndicator(
+                    onRefresh: () async{
+                      await serviceController.getServiceRequests();
+                    },
+                    child: ListView(
+                        children: [
                           Column(
-                            children: [
-                              // for (int i=0;i<2;i++)
-                                // Container(
-                                //     margin: EdgeInsets.only(bottom: 20),
-                                //     child: SvgPicture.asset("assets/frame.svg")),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Text("Welcome, ${controller.firstName.value}",style: style16Medium(),),
+                                const SizedBox(width: 20,),
+                                Image.asset("assets/welcome_bot.jpg")
+                              ],
+                            ),
+                            const SizedBox(height: 20,),
+                            Text("Thank you for being a part of Helping Hand. Manage your services, connect with students, and grow your professional network.",
 
-                            ],
-                          ),
-                          SizedBox(height: 20,),
-                          Text("New Student Request",style: style16Medium(),),
-                          SizedBox(height: 20,),
-                          Center(child: Text("No Requests Found")),
-                          SizedBox(height: 20,),
-                          // ChatRequestWidget(),
+                              style: style14(),textAlign: TextAlign.left,),
 
-                          const SizedBox(height: 20,),
-                          Text("Recent Notifications",style: style16Medium(),),
-                          const SizedBox(height: 20,),
-                          const Center(child: Text("No Notifications Found")),
+                            const SizedBox(height: 30,),
 
-                        ],
-                      ),]
+                            Text("Your Active Tasks",style: style16Medium(),),
+                            const SizedBox(height: 20,),
+                            const Center(child: Text("No Tasks Found")),
+                            Column(
+                              children: [
+                                // for (int i=0;i<2;i++)
+                                  // Container(
+                                  //     margin: EdgeInsets.only(bottom: 20),
+                                  //     child: SvgPicture.asset("assets/frame.svg")),
+
+                              ],
+                            ),
+                            SizedBox(height: 20,),
+                            Text("New Student Request",style: style16Medium(),),
+                            SizedBox(height: 20,),
+
+                            Obx(() {
+                              if (serviceController.isLoading.value) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              else if (serviceController.serviceRequests.isEmpty) {
+                                return const Center(child: Text("No Requests Found"));
+
+                              } else {
+                                return Column(
+                                  children: serviceController.serviceRequests.map((serviceReq) {
+                                    return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.studentId,);
+                                  }).toList(),
+                                );
+                              }
+                            }),
+
+                            const SizedBox(height: 20,),
+                            // ChatRequestWidget(),
+
+                            const SizedBox(height: 20,),
+                            Text("Recent Notifications",style: style16Medium(),),
+                            const SizedBox(height: 20,),
+                            const Center(child: Text("No Notifications Found")),
+
+                          ],
+                        ),]
+                    ),
                   ),
                 ),
               ),

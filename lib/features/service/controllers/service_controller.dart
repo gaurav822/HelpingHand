@@ -26,7 +26,7 @@ class ServiceController extends GetxController {
   }
 
 
-  Future<void> getServiceRequests()async{
+  Future<void> getServiceRequests() async {
     try {
       List<RequestedService> fetchedRequests = await ServiceRepository.instance.getServiceRequests();
       serviceRequests.assignAll(fetchedRequests); // Assign the fetched data to the observable list
@@ -58,6 +58,37 @@ class ServiceController extends GetxController {
       Loaders.successSnackBar(
           title: "Success",
           message: "Your service request has been sent!");
+
+      // Move to verify email address
+    } catch (e) {
+      FullScreenLoader.stopLoading();
+      Loaders.errorSnackBar(title: 'Oh no!', message: e.toString());
+    }
+  }
+
+  Future<void> acceptServiceRequest(String serviceRequestId) async{
+    try {
+      //start loading
+      FullScreenLoader.openLoadingDialog("Accepting a service...");
+
+      final isConnected = await NetworkManager.instance.isConnected();
+
+      if (!isConnected){
+        FullScreenLoader.stopLoading();
+        return;
+      }
+      //form validation
+
+      final serviceRepository = Get.put(ServiceRepository());
+      await serviceRepository.acceptServiceRequest(serviceRequestId);
+      getServiceRequests();
+
+      FullScreenLoader.stopLoading();
+
+      //show success message
+      Loaders.successSnackBar(
+          title: "Success",
+          message: "Service request approved successfully");
 
       // Move to verify email address
     } catch (e) {

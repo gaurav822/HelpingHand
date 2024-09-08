@@ -1,17 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/dashboard/screens/chat_screen.dart';
 import 'package:helpinghand/features/service/models/requested_service.dart';
 
 import '../../core/app_style.dart';
+import '../../features/service/controllers/service_controller.dart';
 
 class ChatRequestWidget extends StatelessWidget {
   final RequestedService requestedService;
-  const ChatRequestWidget({super.key,required this.requestedService});
+  final TId tid;
+  const ChatRequestWidget({super.key,required this.requestedService,required this.tid});
 
   @override
   Widget build(BuildContext context) {
+    final serviceController = Get.put(ServiceController());
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
@@ -26,10 +28,9 @@ class ChatRequestWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${requestedService.expertId.firstname} ${requestedService.expertId.lastname}", style: style16Semibold(),),
+                  Text("${tid.firstname} ${tid.lastname}", style: style16Semibold(),),
                   const SizedBox(height: 3,),
                   Text(requestedService.serviceTypeId.typename)
-
                 ],
               ),
               const Spacer(),
@@ -41,10 +42,15 @@ class ChatRequestWidget extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    if(requestedService.status=="In Progress"){
-                      Get.to(()=>ChatScreen(userName: "${requestedService.expertId.firstname} ${requestedService.expertId.lastname}"));
+                    if(requestedService.status!="Pending"){
+                      Get.to(()=>ChatScreen(userName: "${tid.firstname} ${tid.lastname}"));
                     }
-                  }, child: Text(requestedService.status=="In Progress"?"Chat":requestedService.status))
+                    else{
+                      if(tid.t=="Student"){
+                        serviceController.acceptServiceRequest(requestedService.id);
+                      }
+                    }
+                  }, child: Text(requestedService.status!="Pending"?"Chat":tid.t=="Student"?"Accept":requestedService.status))
 
             ],
           ),

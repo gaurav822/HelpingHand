@@ -9,6 +9,7 @@ import 'package:helpinghand/core/colors/light_theme_color.dart';
 import 'package:helpinghand/data/repositories/authentication/authentication_repository.dart';
 import 'package:helpinghand/features/authentication/screens/login/login_screen.dart';
 import 'package:helpinghand/features/dashboard/controllers/profile_controller.dart';
+import 'package:helpinghand/features/dashboard_expert/controllers/expert_profile_controller.dart';
 
 import '../../../Utils/Validator/FormValidator.dart';
 import '../../../common/text_strings.dart';
@@ -32,7 +33,7 @@ class ExpertProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileController());
+    final controller = Get.put(ExpertProfileController());
 
     return SafeArea(
       child: Scaffold(

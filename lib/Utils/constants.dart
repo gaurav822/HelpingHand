@@ -4,6 +4,7 @@ class AppConstants {
   static const String tokenExpiration = 'tokenExpiration';
   static const String userType = 'UserType';
   static const String userEmail = 'UserEmail';
+  static const String userName = 'UserName';
   static const String userId = 'UserId';
 
 }

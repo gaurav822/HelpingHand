@@ -52,11 +52,40 @@ class ServiceRepository extends GetxController {
     }
   }
 
+
+  Future<void> acceptServiceRequest(String serviceRequestId) async {
+    final url = Uri.parse('${AppConstants.baseUrl}/service/request/accept/$serviceRequestId');
+
+    final token = await secureStorageService.read(AppConstants.accessToken);
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token':token!
+        }
+      );
+
+      if (response.statusCode == 200) {
+        // Handle success
+        print("Service request approved saved successfully.");
+      } else {
+        // Handle server errors
+        throw ApiException(response.statusCode, response.body);
+      }
+    } on http.ClientException catch (e) {
+      throw ApiException(
+          500, e.message); // Customize as per your error handling
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<RequestedService>> getServiceRequests() async {
     final studentId = await secureStorageService.read(AppConstants.userId);
-    final url = Uri.parse('${AppConstants.baseUrl}/service/getRequestedServices').replace(queryParameters: {
-      'studentId': studentId,
-    },);
+    final userType = await secureStorageService.read(AppConstants.userType);
+    bool isStudent = userType == "Student" ? true :false;
+    final url = Uri.parse('${AppConstants.baseUrl}/service/getRequestedServices');
     final token = await secureStorageService.read(AppConstants.accessToken);
     try {
       final response = await http.post(
@@ -66,7 +95,7 @@ class ServiceRepository extends GetxController {
           'x-auth-token':token!
         },
         body: json.encode({
-          'studentId':studentId,
+          isStudent?'studentId':'expertId' : studentId,
         }),
       );
 

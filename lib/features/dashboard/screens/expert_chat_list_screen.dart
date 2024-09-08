@@ -56,7 +56,7 @@ class ExpertListScreen extends StatelessWidget {
                 } else {
                   return Column(
                     children: serviceController.serviceRequests.map((serviceReq) {
-                      return ChatRequestWidget(requestedService: serviceReq,);
+                      return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.expertId,);
                     }).toList(),
                   );
                 }

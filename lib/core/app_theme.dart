@@ -13,7 +13,7 @@ class AppTheme {
       color: Color(0xFF0EA800),
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.white, // Status bar color
+        statusBarColor: Colors.transparent, // Status bar color
         statusBarIconBrightness: Brightness.dark, // Dark icons
       ),
 
