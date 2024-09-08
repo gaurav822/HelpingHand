@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
@@ -7,6 +9,9 @@ import 'package:helpinghand/features/authentication/screens/signup/verify_accoun
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
 import '../../../../core/network/network_manager.dart';
+import '../../../../data/repositories/service/serviceRepository.dart';
+import 'package:helpinghand/features/service/models/service.dart';
+
 
 class ExpertSignUpController extends GetxController {
   static ExpertSignUpController get instance => Get.find();
@@ -28,8 +33,27 @@ class ExpertSignUpController extends GetxController {
   // Add this to hold selected services
   final RxMap<String, bool> selectedServices = <String, bool>{}.obs;
 
+  var services = <Service>[].obs;
+  var isLoading = true.obs;
+
   void updateSelectedServices(Map<String, bool> services) {
     selectedServices.value = services;
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getServiceTypes();
+  }
+
+  Future<void> getServiceTypes() async {
+    try {
+      List<Service> serviceList = await ServiceRepository.instance.getServiceTypes();
+      services.assignAll(serviceList);
+    } finally {
+      isLoading(false); // Stop loading
+    }
   }
 
   void signUp() async {

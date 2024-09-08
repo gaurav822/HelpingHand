@@ -2,6 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
 import 'package:helpinghand/features/service/models/expert_list_model.dart';
+import 'package:helpinghand/features/service/models/service.dart';
 
 import '../../../Utils/popups/full_screen_loader.dart';
 import '../../../common/loader/loaders.dart';
@@ -16,13 +17,24 @@ class ServiceController extends GetxController {
 //controllers
   // State variables
   var serviceRequests = <RequestedService>[].obs;
+  var services = <Service>[].obs;
   var isLoading = true.obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getServiceTypes();
     getServiceRequests();
+  }
+
+  Future<void> getServiceTypes() async {
+    try {
+      List<Service> serviceList = await ServiceRepository.instance.getServiceTypes();
+      services.assignAll(serviceList);
+    } catch(e) {
+      isLoading(false); // Stop loading
+    }
   }
 
 
@@ -35,7 +47,7 @@ class ServiceController extends GetxController {
     }
   }
 
-  Future<void> sendServiceRequest(String expertId) async{
+  Future<void> sendServiceRequest(String expertId,String serviceTypeId) async{
     try {
       //start loading
       FullScreenLoader.openLoadingDialog("Request for service...");
@@ -49,7 +61,7 @@ class ServiceController extends GetxController {
       //form validation
 
       final serviceRepository = Get.put(ServiceRepository());
-      await serviceRepository.sendServiceRequest(expertId);
+      await serviceRepository.sendServiceRequest(expertId,serviceTypeId);
       getServiceRequests();
 
       FullScreenLoader.stopLoading();

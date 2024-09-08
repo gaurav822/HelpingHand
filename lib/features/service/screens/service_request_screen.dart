@@ -3,13 +3,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/dashboard/screens/chat_screen.dart';
 import 'package:helpinghand/features/service/controllers/service_controller.dart';
+import 'package:helpinghand/features/service/models/service.dart';
 import '../../../common/widgets/expert_widget.dart';
 import '../../../core/app_style.dart';
 import '../../dashboard/controllers/dashboard_controller.dart';
 
 class ServiceRequestScreen extends StatelessWidget {
-  final String serviceName;
-  const ServiceRequestScreen({super.key, required this.serviceName});
+  final Service service;
+  const ServiceRequestScreen({super.key, required this.service});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class ServiceRequestScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text("$serviceName Expert", style: style20Bold()),
+        title: Text("${service.typename} Expert", style: style20Bold()),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios), // The back arrow icon
           onPressed: () {
@@ -72,7 +73,7 @@ class ServiceRequestScreen extends StatelessWidget {
                       else
                         InkWell(
                           onTap: () {
-                            controller.sendServiceRequest(expert.id);
+                            controller.sendServiceRequest(expert.id,service.id);
                           },
                           child: Image.asset("assets/icons/request.png"),
                         ),

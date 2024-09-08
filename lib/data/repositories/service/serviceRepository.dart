@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:helpinghand/Utils/constants.dart';
 import 'package:helpinghand/features/authentication/models/expert_model.dart';
 import 'package:helpinghand/features/authentication/models/student_model.dart';
 import 'package:helpinghand/features/dashboard/models/student_profile.dart';
 import 'package:helpinghand/features/service/models/requested_service.dart';
+import 'package:helpinghand/features/service/models/service.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+
 
 import '../../../Utils/exceptions/api_exceptions.dart';
 import '../../../Utils/securestorage/secure_storage_service.dart';
@@ -18,7 +21,7 @@ class ServiceRepository extends GetxController {
 
 
   // Function to save user data through API
-  Future<void> sendServiceRequest(String expertId) async {
+  Future<void> sendServiceRequest(String expertId,String serviceTypeId) async {
     final url = Uri.parse('${AppConstants.baseUrl}/service/request/create');
 
     final studentId = await secureStorageService.read(AppConstants.userId);
@@ -33,7 +36,7 @@ class ServiceRepository extends GetxController {
         body: json.encode({
           'studentId':studentId,
           'expertId':expertId,
-          'serviceTypeId':'66dab399df286cc18e4ed4f5'
+          'serviceTypeId':serviceTypeId
         }),
       );
 
@@ -103,6 +106,32 @@ class ServiceRepository extends GetxController {
         // Handle success
         print(response.body);
         return requestedServiceFromJson(response.body);
+
+      } else {
+        // Handle server errors
+        throw ApiException(response.statusCode, response.body);
+      }
+    } on http.ClientException catch (e) {
+      throw ApiException(
+          500, e.message); // Customize as per your error handling
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Service>> getServiceTypes() async {
+    final url = Uri.parse('${AppConstants.baseUrl}/service/types');
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Handle success
+        return serviceFromJson(response.body);
 
       } else {
         // Handle server errors

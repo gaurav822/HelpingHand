@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/authentication/controllers/signup/expert_signup_controller.dart';
+import 'package:helpinghand/features/service/controllers/service_controller.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../Utils/Validator/FormValidator.dart';
 import '../../../../common/text_strings.dart';
@@ -25,12 +26,11 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
   // Static map of services with service name as the key and service ID as the value
   final Map<String, String> services = {
     'TFN': 'service_001',
-    'ABN': 'service_002',
-    'Bank Setup': 'service_003',
-    'Police Report': 'service_004',
-    'JOBS': 'service_005',
+    'Bank Setup': 'service_002',
+    'Police Check': 'service_003',
+    'ABN': 'service_004',
+    'Jobs': 'service_005',
     'Accommodation': 'service_006',
-    'Others': 'service_007',
   };
 
   // This map will track which services are selected
@@ -163,32 +163,30 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
                     ),
                     const SizedBox(height: 30,),
 
-                    ...services.keys.map((serviceName) {
-                      return Obx(() {
-                        final isSelected = selectedServices[serviceName]!;
-                        return Column(
-                          children: [
-                            CheckboxListTile(
-                              activeColor: LightThemeColor.colorPrimary,
-                              title: Text(serviceName, style: style16Medium()),
-                              value: isSelected,
-                              onChanged: (value) {
-                                selectedServices[serviceName] = value!;
-                              },
-                            ),
-                            if (isSelected)
-                              ImagePickerWidget(
-                                title: 'Upload document for $serviceName',
-                                onImagePicked: (imagePath) {
-                                  // uploadedDocuments[serviceName] = imagePath;
-                                },
-                              ),
-                            const SizedBox(height: 10),
-                          ],
-                        );
-                      });
-                    }).toList(),
 
+                       Obx(() {
+                        if(controller.isLoading.value){
+                          return const Center(child: CircularProgressIndicator(),);
+                        }
+                        else if(controller.services.isEmpty){
+                          return const Center(child: Text("No Services Found"),);
+                        }
+                        else{
+                          return Column(
+                            children: controller.services.map((service) {
+                              final isSelected = selectedServices[service.typename]!;
+                              return CheckboxListTile(
+                                activeColor: LightThemeColor.colorPrimary,
+                                title: Text(service.typename, style: style16Medium()),
+                                value: isSelected,
+                                onChanged: (value) {
+                                  selectedServices[service.typename] = value!;
+                                },
+                              );
+                            }).toList(),
+                          );
+                        }
+                      }),
 
 
                     const SizedBox(height: 40),
