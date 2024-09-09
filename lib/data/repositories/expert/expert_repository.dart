@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:helpinghand/Utils/constants.dart';
 import 'package:helpinghand/features/authentication/models/expert_model.dart';
+import 'package:helpinghand/features/authentication/models/register_response.dart';
 import 'package:helpinghand/features/authentication/models/student_model.dart';
 import 'package:helpinghand/features/dashboard/models/student_profile.dart';
 import 'package:helpinghand/features/dashboard_expert/models/expert_profile_response_model.dart';
@@ -18,7 +19,7 @@ class ExpertRepository extends GetxController {
 
 
   // Function to save user data through API
-  Future<void> saveExpertRecord(ExpertModel expert) async {
+  Future<RegisterResponse> saveExpertRecord(ExpertModel expert) async {
     final url = Uri.parse('${AppConstants.baseUrl}/auth/register/expert');
     try {
       final response = await http.post(
@@ -30,8 +31,7 @@ class ExpertRepository extends GetxController {
       );
 
       if (response.statusCode == 201) {
-        // Handle success
-        print("Expert record saved successfully.");
+        return registerResponseFromJson(response.body);
       } else {
         // Handle server errors
         throw ApiException(response.statusCode, response.body);

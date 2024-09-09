@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/Utils/rating_mapper.dart';
 import 'package:helpinghand/core/colors/light_theme_color.dart';
 import 'package:helpinghand/data/repositories/authentication/authentication_repository.dart';
 import 'package:helpinghand/features/authentication/screens/login/login_screen.dart';
@@ -39,105 +40,114 @@ class ExpertProfileScreen extends StatelessWidget {
       child: Scaffold(
       
         body: SingleChildScrollView(
-          child:  Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
+          child: Obx(() {
+            if (controller.isLoading.value) {
+              return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: const Center(child: CircularProgressIndicator()));
+            } else {
+              final expertProfile = controller.expertProfile.value;
+              return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Stack(
+                      Column(
                         children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image.asset("assets/profile.jpg",height: 100,width: 100,)),
-                          const Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Icon(Icons.camera_alt),
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset("assets/profile.jpg",height: 100,width: 100,)),
+                              const Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Icon(Icons.camera_alt),
+                              ),
+
+                            ],
                           ),
-      
+                          const SizedBox(height: 10,),
+                          Text("${expertProfile!.firstname} ${expertProfile.lastname}",style: style20Medium(),),
+
+                          const SizedBox(height: 10,),
+                          Text(expertProfile.expertise.join(', '),style: style14(),),
+                          const SizedBox(height: 10,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(RatingMapper(expertProfile.rating.toDouble()).assetPath,height: 40,width: 120,),
+                              const SizedBox(width: 10,),
+                              Text("${expertProfile.rating}/5"),
+                            ],
+                          ),
                         ],
                       ),
-                      SizedBox(height: 10,),
-                      Text("Gaurav Dahal",style: style20Medium(),),
-      
-                      SizedBox(height: 10,),
-                      Text("Tax Specialist",style: style14(),),
-                      SizedBox(height: 10,),
-      
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset("assets/rating_5.png"),
-                          SizedBox(width: 10,),
-                          Text("5/5"),
-                        ],
+                      const SizedBox(height: 40,),
+                      Text("About me",style: style16Bold(),),
+                      const SizedBox(height: 10,),
+
+                      Text(
+                          expertProfile.bio),
+
+                      SizedBox(height: 40,),
+                      Text("Compliance Documents",style: style16Bold(),),
+
+                      SizedBox(height: 20,),
+                      ComplianceCard("Tax File Number (TFN)",true),
+
+                      ComplianceCard("Visa Status",true),
+
+                      ComplianceCard("Real Estate Certificate",false),
+
+
+                      SizedBox(height: 40,),
+                      Text("Feedback/Reviews",style: style16Bold(),),
+
+
+                      SizedBox(height: 20,),
+                      Text("Rida Zahoor : Great service!"),
+                      SizedBox(height: 5,),
+                      Image.asset("assets/rating_5.png"),
+
+                      SizedBox(height: 20,),
+                      Text("Bishal : Got my TFN ready quickly!"),
+                      SizedBox(height: 5,),
+                      Image.asset("assets/rating_5.png"),
+
+                      SizedBox(height: 100,),
+
+
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10), // This makes the button rectangular with sharp corners
+                                ),
+                              ),
+                              onPressed: (){
+                                AuthenticationRepository.instance.logout();
+                                Get.offAll(()=>const LoginScreen());
+                                Fluttertoast.showToast(msg: "Logout Successful");
+                              }, child: const Text("Logout")),
+                        ),
                       ),
+
+                      SizedBox(height: 50,)
+
                     ],
-                  ),
-                  SizedBox(height: 40,),
-                  Text("About me",style: style16Bold(),),
-                  SizedBox(height: 10,),
-
-                  Text(
-                      "I am a seasoned professional with over 5 years of experience in helping international students with [specific services like TFN/ABN setup, resume writing, etc.]"),
-
-                  SizedBox(height: 40,),
-                  Text("Compliance Documents",style: style16Bold(),),
-
-                  SizedBox(height: 20,),
-                  ComplianceCard("Tax File Number (TFN)",true),
-
-                  ComplianceCard("Visa Status",true),
-
-                  ComplianceCard("Real Estate Certificate",false),
-
-
-                  SizedBox(height: 40,),
-                  Text("Feedback/Reviews",style: style16Bold(),),
-
-
-                  SizedBox(height: 20,),
-                  Text("Rida Zahoor : Great service!"),
-                  SizedBox(height: 5,),
-                  Image.asset("assets/rating_5.png"),
-
-                  SizedBox(height: 20,),
-                  Text("Bishal : Got my TFN ready quickly!"),
-                  SizedBox(height: 5,),
-                  Image.asset("assets/rating_5.png"),
-
-                  SizedBox(height: 100,),
-
-
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  10), // This makes the button rectangular with sharp corners
-                            ),
-                          ),
-                          onPressed: (){
-                            AuthenticationRepository.instance.logout();
-                            Get.offAll(()=>const LoginScreen());
-                            Fluttertoast.showToast(msg: "Logout Successful");
-                          }, child: const Text("Logout")),
-                    ),
-                  ),
-
-                  SizedBox(height: 50,)
-
-                ],
-              )
-          ),
-        ),
+                  )
+              );
+            }
+          }),
+        )
       
       ),
     );

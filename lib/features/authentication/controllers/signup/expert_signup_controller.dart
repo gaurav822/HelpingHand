@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
 import 'package:helpinghand/features/authentication/models/expert_model.dart';
+import 'package:helpinghand/features/authentication/models/register_response.dart';
 import 'package:helpinghand/features/authentication/screens/signup/verify_account_screen.dart';
+import 'package:helpinghand/features/document/model/document_service.dart';
+import 'package:helpinghand/features/document/screens/document_upload_screen.dart';
 
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
@@ -74,13 +77,27 @@ class ExpertSignUpController extends GetxController {
         return;
       }
 
-      // Collect selected services
-      final expertise = selectedServices.entries
-          .where((entry) => entry.value)
-          .map((entry) => entry.key)
-          .toList();
 
-      print(expertise);
+      // Ensure at least one expertise is selected
+      if (selectedServices.entries.where((entry) => entry.value).isEmpty) {
+        FullScreenLoader.stopLoading();
+        Loaders.errorSnackBar(title: 'Please select at least one expertise');
+        return;
+      }
+
+      // Create list of DocumentService objects
+      List<DocumentService> documentServices = selectedServices.entries
+          .where((entry) => entry.value) // Only selected services
+          .map((entry) {
+        // Find corresponding service object based on typename
+        final service = services.firstWhere((service) => service.typename == entry.key);
+        return DocumentService(id: service.id, type: 'Certificate',docName: service.typename);
+      })
+          .toList();
+      documentServices.add(const DocumentService(id: 'f9b2a1d3c5e678f0a1b2c3d4', type: 'ID',docName: 'Visa'));
+
+      // Now `documentServices` contains a list of selected services
+      final expertise = documentServices.map((docService) => docService.type).toList();
 
       // save authenticated user to firebase firestore
       final expert = ExpertModel(
@@ -97,17 +114,17 @@ class ExpertSignUpController extends GetxController {
       );
 
       final expertRepository = Get.put(ExpertRepository());
-      await expertRepository.saveExpertRecord(expert);
+      RegisterResponse profile = await expertRepository.saveExpertRecord(expert);
 
       FullScreenLoader.stopLoading();
 
       // show success message
       Loaders.successSnackBar(
           title: "Congratulations",
-          message: "Your account has been created! Verify email to continue");
+          message: "Your account has been created! Upload documents to continue");
 
       // Move to verify email address
-      Get.to(() => VerifyAccountScreen(email: emailAddress.text.trim(),));
+      Get.to(() => DocumentUploadScreen(profile: profile,documentServices: documentServices,));
     } catch (e) {
       FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: 'Oh no!', message: e.toString());

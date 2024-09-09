@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/authentication/controllers/signup/expert_signup_controller.dart';
+import 'package:helpinghand/features/document/controllers/document_controller.dart';
 import 'package:helpinghand/features/service/controllers/service_controller.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../Utils/Validator/FormValidator.dart';
@@ -22,6 +23,7 @@ class ExpertRegisterScreen extends StatefulWidget {
 
 class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
   final controller = Get.put(ExpertSignUpController());
+  final documentController = Get.put(DocumentController());
 
   // Static map of services with service name as the key and service ID as the value
   final Map<String, String> services = {
@@ -30,7 +32,7 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
     'Police Check': 'service_003',
     'ABN': 'service_004',
     'Jobs': 'service_005',
-    'Accommodation': 'service_006',
+    'Accomodation': 'service_006',
   };
 
   // This map will track which services are selected
@@ -45,7 +47,6 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
     super.initState();
     services.forEach((key, value) {
       selectedServices[key] = false;
-      uploadedDocuments[key] = null;
     });
   }
 
@@ -122,16 +123,8 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
                           FormValidator.validateEmptyText(GTexts.shortBio, value),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
-                    ImagePickerWidget(
-                        title: GTexts.uploadVisa,
-                        onImagePicked: (value)=>{
-                          setState(() {
-
-                          })
-                        }),
-                    const SizedBox(height: 30,),
                     Obx(
                           () => FieldWidget(
                           label: GTexts.password,
@@ -176,13 +169,13 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
                             children: controller.services.map((service) {
                               final isSelected = selectedServices[service.typename]!;
                               return CheckboxListTile(
-                                activeColor: LightThemeColor.colorPrimary,
-                                title: Text(service.typename, style: style16Medium()),
-                                value: isSelected,
-                                onChanged: (value) {
-                                  selectedServices[service.typename] = value!;
-                                },
-                              );
+                              activeColor: LightThemeColor.colorPrimary,
+                              title: Text(service.typename, style: style16Medium()),
+                              value: isSelected,
+                              onChanged: (value) {
+                                selectedServices[service.typename] = value!;
+                              },
+                                                            );
                             }).toList(),
                           );
                         }
@@ -243,11 +236,11 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'Please select your expertise from the below and for each of the expertise you will need to upload the corresponding documents for background check:',
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 _buildInfoItem(
                   'TFN',
                   'Upload your own tax file related document issued by Australian document',

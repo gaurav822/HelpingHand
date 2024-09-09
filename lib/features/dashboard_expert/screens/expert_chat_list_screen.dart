@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:helpinghand/common/widgets/chat_request.dart';
-import 'package:helpinghand/features/service/controllers/service_controller.dart';
 
+import '../../../common/widgets/chat_request.dart';
 import '../../../common/widgets/submit_button.dart';
 import '../../../core/app_style.dart';
+import '../../service/controllers/service_controller.dart';
 
 
-class ExpertListScreen extends StatelessWidget {
-  const ExpertListScreen({
+class ExpertChatListScreen extends StatelessWidget {
+  const ExpertChatListScreen({
     super.key,
     required this.menuScreenContext,
     required this.onScreenHideButtonPressed,
@@ -23,7 +23,6 @@ class ExpertListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final serviceController = ServiceController.instance;
-
     return SingleChildScrollView(
         child: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -37,26 +36,26 @@ class ExpertListScreen extends StatelessWidget {
                 }
                 else if (serviceController.serviceRequests.isEmpty) {
                   return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset("assets/no_result.jpg"),
-                            const SizedBox(height: 20,),
-                            Text("Chats Unavailable",style: style20Bold(),),
-                            const SizedBox(height: 20,),
-                            const Text("Please request to connect with the expert  first !"),
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/no_result.jpg"),
+                          const SizedBox(height: 20,),
+                          Text("Chats Unavailable",style: style20Bold(),),
+                          const SizedBox(height: 20,),
+                          const Text("Students need to request first!"),
 
 
-                          ],
-                        )
+                        ],
+                      )
 
                   );
 
                 } else {
                   return Column(
                     children: serviceController.serviceRequests.map((serviceReq) {
-                      return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.expertId,);
+                      return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.studentId,);
                     }).toList(),
                   );
                 }

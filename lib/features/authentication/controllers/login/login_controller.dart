@@ -30,8 +30,9 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    emailAddress.text = localStorage.read('REMEMBER_ME_EMAIL')??"";
-    password.text = localStorage.read('REMEMBER_ME_PASSWORD')??"";
+    loginFormKey.currentState?.reset();
+    // emailAddress.text = localStorage.read('REMEMBER_ME_EMAIL')??"";
+    // password.text = localStorage.read('REMEMBER_ME_PASSWORD')??"";
   }
   //Email and Password Sign In
   Future<void> emailAndPasswordSignIn() async {
@@ -62,6 +63,8 @@ class LoginController extends GetxController {
       String userType = await AuthenticationRepository.instance.signInWithEmailPass(email: emailAddress.text.trim(),password:password.text.trim());
 
       FullScreenLoader.stopLoading();
+
+      loginFormKey.currentState!.reset();
 
       // If the user type is retrieved, navigate based on it
       if (userType.isNotEmpty) {

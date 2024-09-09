@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:helpinghand/Utils/constants.dart';
 import 'package:helpinghand/features/authentication/models/student_model.dart';
+import 'package:helpinghand/features/authentication/models/register_response.dart';
 import 'package:helpinghand/features/dashboard/models/student_profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -15,7 +16,7 @@ class StudentRepository extends GetxController {
 
 
   // Function to save user data through API
-  Future<void> saveStudentRecord(StudentModel student) async {
+  Future<RegisterResponse> saveStudentRecord(StudentModel student) async {
     final url = Uri.parse('${AppConstants.baseUrl}/auth/register/student');
     try {
       final response = await http.post(
@@ -28,7 +29,7 @@ class StudentRepository extends GetxController {
 
       if (response.statusCode == 201) {
         // Handle success
-        print("Student record saved successfully.");
+        return registerResponseFromJson(response.body);
       } else {
         // Handle server errors
         throw ApiException(response.statusCode, response.body);

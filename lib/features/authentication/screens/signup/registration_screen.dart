@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/document/controllers/document_controller.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../Utils/Validator/FormValidator.dart';
 import '../../../../common/text_strings.dart';
@@ -19,6 +20,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final controller = Get.put(SignUpController());
+  final documentController = Get.put(DocumentController());
 
   @override
   Widget build(BuildContext context) {
@@ -97,17 +99,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) =>
                           FormValidator.validateEmptyText(GTexts.address, value),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    ImagePickerWidget(
-                        title: GTexts.uploadVisa,
-                        onImagePicked: (value)=>{
-                          setState(() {
 
-                          })
-                        }),
-                    const SizedBox(height: 30,),
+                    const SizedBox(height: 10,),
                     Obx(
                           () => FieldWidget(
                           label: GTexts.password,

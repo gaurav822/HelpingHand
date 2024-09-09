@@ -1,6 +1,7 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
+import 'package:helpinghand/features/dashboard/controllers/dashboard_controller.dart';
 import 'package:helpinghand/features/service/models/expert_list_model.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
@@ -9,7 +10,6 @@ import '../../../common/loader/loaders.dart';
 import '../../../core/network/network_manager.dart';
 import '../../../data/repositories/service/serviceRepository.dart';
 import '../models/requested_service.dart';
-
 
 class ServiceController extends GetxController {
   static ServiceController get instance => Get.find();
@@ -30,46 +30,47 @@ class ServiceController extends GetxController {
 
   Future<void> getServiceTypes() async {
     try {
-      List<Service> serviceList = await ServiceRepository.instance.getServiceTypes();
+      List<Service> serviceList =
+          await ServiceRepository.instance.getServiceTypes();
       services.assignAll(serviceList);
-    } catch(e) {
+    } catch (e) {
       isLoading(false); // Stop loading
     }
   }
 
-
   Future<void> getServiceRequests() async {
     try {
-      List<RequestedService> fetchedRequests = await ServiceRepository.instance.getServiceRequests();
-      serviceRequests.assignAll(fetchedRequests); // Assign the fetched data to the observable list
+      List<RequestedService> fetchedRequests =
+          await ServiceRepository.instance.getServiceRequests();
+      serviceRequests.assignAll(
+          fetchedRequests); // Assign the fetched data to the observable list
     } finally {
       isLoading(false); // Stop loading
     }
   }
 
-  Future<void> sendServiceRequest(String expertId,String serviceTypeId) async{
+  Future<void> sendServiceRequest(String expertId, String serviceTypeId) async {
     try {
       //start loading
       FullScreenLoader.openLoadingDialog("Request for service...");
 
       final isConnected = await NetworkManager.instance.isConnected();
 
-      if (!isConnected){
+      if (!isConnected) {
         FullScreenLoader.stopLoading();
         return;
       }
       //form validation
 
       final serviceRepository = Get.put(ServiceRepository());
-      await serviceRepository.sendServiceRequest(expertId,serviceTypeId);
+      await serviceRepository.sendServiceRequest(expertId, serviceTypeId);
       getServiceRequests();
 
       FullScreenLoader.stopLoading();
 
       //show success message
       Loaders.successSnackBar(
-          title: "Success",
-          message: "Your service request has been sent!");
+          title: "Success", message: "Your service request has been sent!");
 
       // Move to verify email address
     } catch (e) {
@@ -78,14 +79,14 @@ class ServiceController extends GetxController {
     }
   }
 
-  Future<void> acceptServiceRequest(String serviceRequestId) async{
+  Future<void> acceptServiceRequest(String serviceRequestId) async {
     try {
       //start loading
       FullScreenLoader.openLoadingDialog("Accepting a service...");
 
       final isConnected = await NetworkManager.instance.isConnected();
 
-      if (!isConnected){
+      if (!isConnected) {
         FullScreenLoader.stopLoading();
         return;
       }
@@ -99,13 +100,27 @@ class ServiceController extends GetxController {
 
       //show success message
       Loaders.successSnackBar(
-          title: "Success",
-          message: "Service request approved successfully");
+          title: "Success", message: "Service request approved successfully");
 
       // Move to verify email address
     } catch (e) {
       FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: 'Oh no!', message: e.toString());
     }
+  }
+
+  List<ExpertListModel> getExpertsByServiceType(String serviceType)  {
+    List<ExpertListModel> fetchedExperts = filterExpertsByServiceType(
+        DashboardController.instance.experts, serviceType);
+
+    return fetchedExperts;
+    // Assign the fetched data to the observable list
+  }
+
+  List<ExpertListModel> filterExpertsByServiceType(
+      List<ExpertListModel> expertList, String serviceType) {
+    return expertList
+        .where((expert) => expert.expertise.contains(serviceType))
+        .toList();
   }
 }

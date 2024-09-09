@@ -13,31 +13,42 @@ class ExpertProfileController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final SecureStorageService secureStorageService = Get.find<SecureStorageService>();
 
-
   var isLoading = true.obs;
   final firstName = ''.obs;
+
+  // Create an observable for the entire expert profile
+  var expertProfile = Rx<ExpertProfileResponseModel?>(null);
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getExpertProfile();
+    getReviews();
   }
 
   Future<void> getExpertProfile() async {
     String? name = await secureStorageService.read(AppConstants.userName);
     firstName.value = name!;
 
-    // try {
-    //   isLoading(true); //
-    //   final expertRepository = Get.put(ExpertRepository());
-    //   ExpertProfileResponseModel expert = await expertRepository
-    //       .getExpertProfile();
-    //   firstName.value  = expert.firstname;
-    // }
-    // finally{
-    //   isLoading(false); // Stop loading
-    // }
+    try {
+      final expertRepository = Get.put(ExpertRepository());
+      ExpertProfileResponseModel fetchedProfile = await expertRepository
+          .getExpertProfile();
+      expertProfile.value = fetchedProfile; // Update the observable
+    }
+    catch(e){
+      isLoading(false); // Stop loading
+    }
+  }
+
+  Future<void> getReviews() async {
+    try{
+
+    }
+    finally{
+      isLoading(false);
+    }
   }
 
   Future<void> logout()async{

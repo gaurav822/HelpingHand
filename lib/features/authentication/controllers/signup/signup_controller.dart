@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/authentication/models/student_model.dart';
+import 'package:helpinghand/features/authentication/models/register_response.dart';
 import 'package:helpinghand/features/authentication/screens/signup/verify_account_screen.dart';
+import 'package:helpinghand/features/document/model/document_service.dart';
+import 'package:helpinghand/features/document/screens/document_upload_screen.dart';
+import 'package:helpinghand/features/service/models/service.dart';
 
 import '../../../../Utils/popups/full_screen_loader.dart';
 import '../../../../common/loader/loaders.dart';
@@ -55,17 +59,17 @@ class SignUpController extends GetxController {
           password: password.text.trim());
 
       final studentRepository = Get.put(StudentRepository());
-      await studentRepository.saveStudentRecord(student);
+      RegisterResponse studentRegister = await studentRepository.saveStudentRecord(student);
 
       FullScreenLoader.stopLoading();
 
       //show success message
       Loaders.successSnackBar(
           title: "Congratulations",
-          message: "Your account has been created! Verify email to continue");
+          message: "Your account has been created! Upload document to continue");
 
       // Move to verify email address
-      Get.to(() => VerifyAccountScreen(email: emailAddress.text.trim(),));
+      Get.to(() => DocumentUploadScreen(profile:studentRegister, documentServices: const [DocumentService(id: 'f9b2a1d3c5e678f0a1b2c3d4', type: 'ID',docName: 'Visa')],));
     } catch (e) {
       FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: 'Oh no!', message: e.toString());

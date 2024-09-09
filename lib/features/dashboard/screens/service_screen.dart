@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/accomodation/screens/accomodation_listing_screen.dart';
 import 'package:helpinghand/features/job/screens/job_listing.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
 import '../../../Utils/AssetMapper.dart';
-import '../../../common/widgets/submit_button.dart';
 import '../../../core/app_style.dart';
 import '../../service/controllers/service_controller.dart';
 import '../../service/screens/service_request_screen.dart';

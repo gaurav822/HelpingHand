@@ -1,13 +1,13 @@
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
-import "package:helpinghand/features/dashboard/screens/expert_chat_list_screen.dart";
+import "package:helpinghand/features/dashboard/screens/student_chat_list_screen.dart";
 import "package:helpinghand/features/dashboard/screens/profile_screen.dart";
 import "package:helpinghand/features/dashboard/screens/service_screen.dart";
 import "package:helpinghand/features/dashboard_expert/screens/expert_home_screen.dart";
 import "package:helpinghand/features/dashboard_expert/screens/expert_profile_screen.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
 
-import "expert_chat_screen.dart";
+import "expert_chat_list_screen.dart";
 
 
 
@@ -41,7 +41,7 @@ class _ExpertDashboardState extends State<ExpertDashboard> {
         });
       },
     ),
-    ExpertChatScreen(
+    ExpertChatListScreen(
       menuScreenContext: widget.menuScreenContext,
       hideStatus: _hideNavBar,
       onScreenHideButtonPressed: () {
