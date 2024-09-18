@@ -59,8 +59,6 @@ class ExpertRepository extends GetxController {
 
       if (response.statusCode == 200) {
         // Decode the JSON response body
-        final jsonResponse = json.decode(response.body);
-
         // Convert the decoded JSON to a StudentProfile object
         final expertList = expertListModelFromJson(response.body);
         print(expertList);

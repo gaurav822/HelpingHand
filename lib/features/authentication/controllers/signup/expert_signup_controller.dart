@@ -94,10 +94,12 @@ class ExpertSignUpController extends GetxController {
         return DocumentService(id: service.id, type: 'Certificate',docName: service.typename);
       })
           .toList();
+
+      final expertise = documentServices.map((docService) => docService.docName).toList();
+
       documentServices.add(const DocumentService(id: 'f9b2a1d3c5e678f0a1b2c3d4', type: 'ID',docName: 'Visa'));
 
       // Now `documentServices` contains a list of selected services
-      final expertise = documentServices.map((docService) => docService.type).toList();
 
       // save authenticated user to firebase firestore
       final expert = ExpertModel(

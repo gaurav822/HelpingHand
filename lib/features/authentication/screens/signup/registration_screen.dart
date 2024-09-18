@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/authentication/screens/login/login_screen.dart';
 import 'package:helpinghand/features/document/controllers/document_controller.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../Utils/Validator/FormValidator.dart';
@@ -55,13 +56,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) =>
                           FormValidator.validateEmptyText(GTexts.lastName, value),
                     ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.uniColg,
-                      controller: controller.schoolName,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.school,value),
-                    ),
+                    // const SizedBox(height: 10),
+                    // FieldWidget(
+                    //   label: GTexts.uniColg,
+                    //   controller: controller.schoolName,
+                    //   validator: (value) =>
+                    //       FormValidator.validateEmptyText(GTexts.school,value),
+                    // ),
                     const SizedBox(height: 10),
                     FieldWidget(
                       label: GTexts.email,
@@ -69,20 +70,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) =>
                           FormValidator.validateEmail(value),
                     ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.schoolMail,
-                      controller: controller.schoolEmailAddress,
-                      validator: (value) =>
-                          FormValidator.validateEmail(value),
-                    ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.nationality,
-                      controller: controller.nationality,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText( GTexts.nationality,value),
-                    ),
+                    // const SizedBox(height: 10),
+                    // FieldWidget(
+                    //   label: GTexts.schoolMail,
+                    //   controller: controller.schoolEmailAddress,
+                    //   validator: (value) =>
+                    //       FormValidator.validateEmail(value),
+                    // ),
+                    // const SizedBox(height: 10),
+                    // FieldWidget(
+                    //   label: GTexts.nationality,
+                    //   controller: controller.nationality,
+                    //   validator: (value) =>
+                    //       FormValidator.validateEmptyText( GTexts.nationality,value),
+                    // ),
                     const SizedBox(height: 10),
                     FieldWidget(
                       label: GTexts.phoneNumber,
@@ -91,14 +92,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           FormValidator.validatePhoneNumber(value),
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: 10),
-
-                    FieldWidget(
-                      label: GTexts.address,
-                      controller: controller.address,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.address, value),
-                    ),
+                    // const SizedBox(height: 10),
+                    //
+                    // FieldWidget(
+                    //   label: GTexts.address,
+                    //   controller: controller.address,
+                    //   validator: (value) =>
+                    //       FormValidator.validateEmptyText(GTexts.address, value),
+                    // ),
 
                     const SizedBox(height: 10,),
                     Obx(
@@ -133,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-                          Get.back();
+                          Get.offAll(const LoginScreen());
                         },
                         child: Text(
                           GTexts.signIn,

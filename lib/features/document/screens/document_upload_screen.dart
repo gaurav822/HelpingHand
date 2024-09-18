@@ -62,6 +62,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
     return WillPopScope(
       onWillPop: () async {
         if (areAllDocumentsUploaded()) {
+          Get.offAll(const LoginScreen());
           return Future.value(true);
         } else {
           Loaders.errorSnackBar(

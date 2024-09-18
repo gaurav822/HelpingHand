@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/Utils/progressMapper.dart';
+import 'package:helpinghand/common/widgets/task_progress_frame.dart';
 import 'package:helpinghand/features/dashboard/controllers/dashboard_controller.dart';
 import 'package:helpinghand/features/service/controllers/service_controller.dart';
 import 'package:helpinghand/features/service/models/requested_service.dart';
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: serviceController.serviceRequests.map((service) {
                                     return Container(
                                       margin: const EdgeInsets.only(bottom: 20),
-                                      child: taskProgressFrame(service)
+                                      child: TaskProgressFrame(service: service,user: service.expertId,)
                                     );
                                   }).toList(),
                                 );
@@ -135,68 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ))
-    );
-  }
-
-  Widget taskProgressFrame(RequestedService service){
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
-      child: Container(
-        padding: const EdgeInsets.all(25),
-        width: double.infinity,
-        color: const Color(0xFFE3EEDA),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.asset("assets/profile.jpg",height: 70,width: 70,)),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        child: Text(service.serviceTypeId.typename,style: style14Semibold(),)),
-                    Row(
-
-                      children: [
-                        ProgressLineWidget(
-                          end: Text("${(ProgressMapper(service.status).progressVal * 100).toStringAsFixed(0)}%"),
-                          percent: ProgressMapper(service.status).progressVal,
-                          lineWidth: 20,
-                          lineColors: const [
-                            Colors.green,
-                          ],
-                          bgColor: Colors.grey.withOpacity(0.4),
-                          innerPadding: const EdgeInsets.all(20),
-                          width: 100,
-                          height: 60,
-                          callback: (value) {
-                            setState(() {
-                              _value = value;
-                            });
-                          },
-
-                        ),
-                        SizedBox(width: 20,),
-                        Text("View Details",style: style14Medium(),)
-                      ],
-                    )
-                  ],
-                )
-
-              ],
-            ),
-
-            Container(
-              margin: EdgeInsets.only(left: 10),
-                child: Text("${service.expertId.firstname} ${service.expertId.lastname}",style: style16(),))
-          ],
-        )
-      ),
     );
   }
 }

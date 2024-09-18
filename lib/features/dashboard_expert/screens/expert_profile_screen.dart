@@ -99,7 +99,7 @@ class ExpertProfileScreen extends StatelessWidget {
 
                       ComplianceCard("Visa Status",true),
 
-                      ComplianceCard("Real Estate Certificate",false),
+                      // ComplianceCard("Real Estate Certificate",false),
 
 
                       SizedBox(height: 40,),

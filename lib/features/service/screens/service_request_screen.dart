@@ -15,7 +15,6 @@ class ServiceRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ServiceController());
-    final dashController = DashboardController.instance;
 
     return Scaffold(
       appBar: AppBar(
@@ -30,47 +29,51 @@ class ServiceRequestScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: controller.getExpertsByServiceType(service.typename).isNotEmpty?Column(
-          children: controller.getExpertsByServiceType(service.typename).map((expert) {
-            // Find the matching service request with this expert ID
-            final matchingServiceRequest = controller.serviceRequests
-                .firstWhereOrNull((service) => service.expertId.id == expert.id);
+      body: Obx(()
+        {
+          return Container(
+          padding: const EdgeInsets.all(20),
+          child: controller.getExpertsByServiceType(service.typename).isNotEmpty?Column(
+            children: controller.getExpertsByServiceType(service.typename).map((expert) {
+              // Find the matching service request with this expert ID
+              final matchingServiceRequest = controller.serviceRequests
+                  .firstWhereOrNull((service) => service.expertId.id == expert.id);
 
-            return Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              child: Row(
-                children: [
-                  ExpertWidget(expertListModel: expert),
-                  const Spacer(),
-                  if (matchingServiceRequest != null)
-                  // If the status is "In Progress", show "Chat", else "Request Sent"
-                    (matchingServiceRequest.status == "In Progress")
-                        ?  ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // This makes the button rectangular with sharp corners
+              return Container(
+                margin: const EdgeInsets.only(bottom: 20),
+                child: Row(
+                  children: [
+                    ExpertWidget(expertListModel: expert),
+                    const Spacer(),
+                    if (matchingServiceRequest != null)
+                    // If the status is "In Progress", show "Chat", else "Request Sent"
+                      (matchingServiceRequest.status == "In Progress")
+                          ?  ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  10), // This makes the button rectangular with sharp corners
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          Get.to(()=>ChatScreen(userName: "${expert.firstname} ${expert.lastname}"));
-                        }, child: const Text("Chat"))
+                          onPressed: () {
+                            Get.to(()=>ChatScreen(userName: "${expert.firstname} ${expert.lastname}"));
+                          }, child: const Text("Chat"))
 
-                        : const Text("Request Sent")
-                  else
-                    InkWell(
-                      onTap: () {
-                        controller.sendServiceRequest(expert.id,service.id);
-                      },
-                      child: Image.asset("assets/icons/request.png"),
-                    ),
-                ],
-              ),
-            );
-          }).toList(),
-        ):const Center(child: Text("No experts Found"),)
+                          : const Text("Request Sent")
+                    else
+                      InkWell(
+                        onTap: () {
+                          controller.sendServiceRequest(expert.id,service.id);
+                        },
+                        child: Image.asset("assets/icons/request.png"),
+                      ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ):const Center(child: Text("No experts Found"),)
+        );
+          },
       ),
     );
   }
