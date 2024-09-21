@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/core/colors/light_theme_color.dart';
 import 'package:helpinghand/features/accomodation/screens/accomodation_listing_screen.dart';
 import 'package:helpinghand/features/dashboard/screens/payment_screen.dart';
+import 'package:helpinghand/features/dashboard/screens/pending_payment_screen.dart';
 import 'package:helpinghand/features/job/screens/job_listing.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
@@ -57,12 +59,14 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                         children: [
                           Expanded(
                             child: ListView(
-                              children: serviceController.services.map((service) {
+                              children: serviceController.services.asMap().entries.map((entry) {
+                                int index = entry.key; // This is the position (index)
+                                var service = entry.value;
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 20),
                                   child: service.typename == "Jobs" || service.typename == "Accomodation"
                                       ? individualService(service)
-                                      : individualServiceWithSelection(service),
+                                      : individualServiceWithSelection(service,index),
                                 );
                               }).toList(),
                             ),
@@ -121,16 +125,24 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     );
   }
 
-  Widget individualServiceWithSelection(Service service) {
+  Widget individualServiceWithSelection(Service service,int index) {
     return InkWell(
       onTap: () {
-        setState(() {
-          if (selectedServices.contains(service)) {
-            selectedServices.remove(service);
-          } else {
-            selectedServices.add(service);
-          }
-        });
+        if(index==2){
+          Get.to(()=>ServiceRequestScreen(service: service));
+        }
+        if(index==3){
+          Get.to(()=>const PaymentPendingScreen());
+        }
+        else{
+          setState(() {
+            if (selectedServices.contains(service)) {
+              selectedServices.remove(service);
+            } else {
+              selectedServices.add(service);
+            }
+          });
+        }
       },
       child: Container(
         color: const Color(0xFFE3EEDA),
@@ -150,18 +162,24 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                   Text('\$${service.price}', style: style12()),
                 ],
               ),
-              Checkbox(
-                value: selectedServices.contains(service),
-                onChanged: (bool? value) {
-                  setState(() {
-                    if (value == true) {
-                      selectedServices.add(service);
-                    } else {
-                      selectedServices.remove(service);
-                    }
-                  });
-                },
-              ),
+               index==3?Image.asset("assets/pending_pay.png",height: 40,width: 40,):index==2?Image.asset("assets/icons/paid.png",height: 40,width: 40,):Transform.scale(
+                 scale: 1.3,
+                 child: Checkbox(
+
+                   activeColor: LightThemeColor.colorPrimary,
+                   checkColor:LightThemeColor.whiteColor,
+                   value: selectedServices.contains(service),
+                   onChanged: (bool? value) {
+                     setState(() {
+                       if (value == true) {
+                         selectedServices.add(service);
+                       } else {
+                         selectedServices.remove(service);
+                       }
+                     });
+                   },
+                 ),
+               )
             ],
           ),
         ),

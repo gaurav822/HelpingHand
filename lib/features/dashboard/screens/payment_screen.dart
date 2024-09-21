@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/common/widgets/submit_button.dart';
 import 'package:helpinghand/core/app_color.dart';
+import 'package:helpinghand/core/colors/light_theme_color.dart';
+import 'package:helpinghand/features/dashboard/screens/pending_payment_screen.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
 import '../../../Utils/AssetMapper.dart';
@@ -63,8 +65,37 @@ class PaymentScreen extends StatelessWidget {
                 },
               ),
             ),
-            Text("Deposit \$$totalPrice to Pay id : helpinghand@gmail.com & Confirm Payment",style: style16Medium(),softWrap: true,overflow: TextOverflow.visible,),
-            const SizedBox(height: 100,),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                color: Colors.blue[100],
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Center(child: Text("Payee Details",style: style20Semibold(),)),
+                      SizedBox(height: 10,),
+                      Text("Deposit Amount : \$$totalPrice",style: style16Medium(),),
+                      SizedBox(height: 10,),
+                      Text("Pay Id : helpinghand@gmail.com",style: style16Medium(),),
+                      SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Icon(Icons.info,color: Colors.blue[500],),
+                          SizedBox(width: 10,),
+                          Flexible(child: Text("Please pay the amount in above account and Confirm Payment",softWrap: true,overflow: TextOverflow.visible,)),
+                        ],
+                      )
+
+                    ],
+                  ),
+                ),
+              ),
+
+                ),
+            const SizedBox(height: 20,),
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
@@ -74,7 +105,9 @@ class PaymentScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            SubmitButton(text: 'Confirm Payment',onPressedCallback: (){},),
+            SubmitButton(text: 'Confirm Payment',onPressedCallback: (){
+              Get.to(const PaymentPendingScreen());
+            },),
             const SizedBox(height: 10),
           ],
         ),

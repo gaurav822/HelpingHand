@@ -84,14 +84,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     //   validator: (value) =>
                     //       FormValidator.validateEmptyText( GTexts.nationality,value),
                     // ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.phoneNumber,
-                      controller: controller.phoneNumber,
-                      validator: (value) =>
-                          FormValidator.validatePhoneNumber(value),
-                      keyboardType: TextInputType.number,
-                    ),
+                    // const SizedBox(height: 10),
+                    // FieldWidget(
+                    //   label: GTexts.phoneNumber,
+                    //   controller: controller.phoneNumber,
+                    //   validator: (value) =>
+                    //       FormValidator.validatePhoneNumber(value),
+                    //   keyboardType: TextInputType.number,
+                    // ),
                     // const SizedBox(height: 10),
                     //
                     // FieldWidget(

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
 import 'package:helpinghand/data/repositories/service/serviceRepository.dart';
 import 'package:helpinghand/features/authentication/controllers/login/login_controller.dart';
+import 'package:helpinghand/features/dashboard/controllers/dashboard_controller.dart';
 import 'Utils/securestorage/secure_storage_service.dart';
 import 'bindings/general_bindings.dart';
 import 'core/app_theme.dart';
@@ -28,6 +29,7 @@ Future<void> main() async{
 
   //await splash until other items load
   FlutterNativeSplash.preserve(widgetsBinding: widgetBinding);
+  Get.lazyPut<DashboardController>(() => DashboardController());
   Get.lazyPut<ServiceController>(() => ServiceController());
   Get.put(SecureStorageService());
   Get.put(LoginController());
