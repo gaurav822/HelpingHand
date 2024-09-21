@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:helpinghand/common/widgets/submit_button.dart';
 import 'package:helpinghand/core/app_color.dart';
 import 'package:helpinghand/core/colors/light_theme_color.dart';
+import 'package:helpinghand/features/dashboard/controllers/payment_controller.dart';
 import 'package:helpinghand/features/dashboard/screens/pending_payment_screen.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
@@ -17,6 +18,7 @@ class PaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PaymentController());
     double totalPrice = selectedServices.fold(0, (sum, service) => sum + service.price);
 
     return Scaffold(
@@ -105,8 +107,9 @@ class PaymentScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            SubmitButton(text: 'Confirm Payment',onPressedCallback: (){
-              Get.to(const PaymentPendingScreen());
+            SubmitButton(text: 'Confirm Payment',
+              onPressedCallback: (){
+                controller.confirmPurchase(selectedServices.map((service) => service.id).toList());
             },),
             const SizedBox(height: 10),
           ],

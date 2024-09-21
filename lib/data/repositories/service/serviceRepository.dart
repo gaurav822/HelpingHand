@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:helpinghand/Utils/constants.dart';
+import 'package:helpinghand/Utils/dummy_data.dart';
 import 'package:helpinghand/features/authentication/models/expert_model.dart';
 import 'package:helpinghand/features/authentication/models/student_model.dart';
 import 'package:helpinghand/features/dashboard/models/student_profile.dart';
@@ -13,6 +14,7 @@ import 'package:get/get.dart';
 import '../../../Utils/exceptions/api_exceptions.dart';
 import '../../../Utils/securestorage/secure_storage_service.dart';
 import '../../../features/service/models/expert_list_model.dart';
+import '../../../features/service/models/purchase_list.dart';
 
 class ServiceRepository extends GetxController {
   static ServiceRepository get instance => Get.find();
@@ -143,6 +145,10 @@ class ServiceRepository extends GetxController {
     } catch (e) {
       rethrow;
     }
+  }
+
+  List<Purchase> getPurchaseList() {
+    return DummyData.dummyPurchases;
   }
 
 }

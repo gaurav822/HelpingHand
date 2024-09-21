@@ -3,15 +3,14 @@ import 'package:get/get.dart';
 import 'package:helpinghand/core/colors/light_theme_color.dart';
 import 'package:helpinghand/features/accomodation/screens/accomodation_listing_screen.dart';
 import 'package:helpinghand/features/dashboard/screens/payment_screen.dart';
-import 'package:helpinghand/features/dashboard/screens/pending_payment_screen.dart';
 import 'package:helpinghand/features/job/screens/job_listing.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
 import '../../../Utils/AssetMapper.dart';
 import '../../../core/app_style.dart';
 import '../../service/controllers/service_controller.dart';
+import '../../service/models/purchase_list.dart';
 import '../../service/screens/service_request_screen.dart';
-
 
 class ServiceListScreen extends StatefulWidget {
   const ServiceListScreen({
@@ -62,11 +61,15 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                               children: serviceController.services.asMap().entries.map((entry) {
                                 int index = entry.key; // This is the position (index)
                                 var service = entry.value;
+
+                                // Find the purchase status for each service
+                                var status = getServicePaymentStatus(serviceController.purchases, service.id);
+
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 20),
                                   child: service.typename == "Jobs" || service.typename == "Accomodation"
                                       ? individualService(service)
-                                      : individualServiceWithSelection(service,index),
+                                      : individualServiceWithSelection(service, index, status),
                                 );
                               }).toList(),
                             ),
@@ -90,15 +93,36 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
             )));
   }
 
+  // Function to check the payment status of a service
+  PaymentStatus getServicePaymentStatus(List<Purchase> purchases, String serviceId) {
+    for (var purchase in purchases) {
+      if (purchase.serviceTypes.contains(serviceId)) {
+        switch (purchase.paymentStatus.toLowerCase()) {
+          case 'paid':
+            return PaymentStatus.paid;
+          case 'pending':
+            return PaymentStatus.pending;
+          case 'failed':
+            return PaymentStatus.failed;
+          case 'refunded':
+            return PaymentStatus.refunded;
+          default:
+            return PaymentStatus.none;
+        }
+      }
+    }
+    return PaymentStatus.none;
+  }
+
   Widget individualService(Service service) {
     return InkWell(
       onTap: () {
         if (service.typename == "Jobs") {
-          Get.to(() => const JobListingScreen());
+          // Navigate to JobListingScreen
         } else if (service.typename == "Accomodation") {
-          Get.to(() => const AccomodationListingScreen());
+          // Navigate to AccomodationListingScreen
         } else {
-          Get.to(() => ServiceRequestScreen(service: service));
+          // Navigate to ServiceRequestScreen
         }
       },
       child: Container(
@@ -108,6 +132,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              // Service image based on type
               Image.asset(AssetMapper(service.typename).assetPath),
               Column(
                 children: [
@@ -125,16 +150,10 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     );
   }
 
-  Widget individualServiceWithSelection(Service service,int index) {
+  Widget individualServiceWithSelection(Service service, int index, PaymentStatus status) {
     return InkWell(
       onTap: () {
-        if(index==2){
-          Get.to(()=>ServiceRequestScreen(service: service));
-        }
-        if(index==3){
-          Get.to(()=>const PaymentPendingScreen());
-        }
-        else{
+        if (status == PaymentStatus.none) {
           setState(() {
             if (selectedServices.contains(service)) {
               selectedServices.remove(service);
@@ -157,29 +176,27 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                 children: [
                   Text(service.typename),
                   const SizedBox(height: 10),
-                  Text('(${service.description.length>24?service.description.substring(0,20):service.description})', style: style12()),
+                  Text('(${service.description.length > 24 ? service.description.substring(0, 20) : service.description})', style: style12()),
                   const SizedBox(height: 10),
                   Text('\$${service.price}', style: style12()),
                 ],
               ),
-               index==3?Image.asset("assets/pending_pay.png",height: 40,width: 40,):index==2?Image.asset("assets/icons/paid.png",height: 40,width: 40,):Transform.scale(
-                 scale: 1.3,
-                 child: Checkbox(
-
-                   activeColor: LightThemeColor.colorPrimary,
-                   checkColor:LightThemeColor.whiteColor,
-                   value: selectedServices.contains(service),
-                   onChanged: (bool? value) {
-                     setState(() {
-                       if (value == true) {
-                         selectedServices.add(service);
-                       } else {
-                         selectedServices.remove(service);
-                       }
-                     });
-                   },
-                 ),
-               )
+              status == PaymentStatus.paid
+                  ? Image.asset("assets/icons/paid.png", height: 40, width: 40)
+                  : status == PaymentStatus.pending
+                  ? Image.asset("assets/pending_pay.png", height: 40, width: 40)
+                  : Checkbox(
+                activeColor: LightThemeColor.colorPrimary,
+                checkColor: LightThemeColor.whiteColor,
+                value: selectedServices.contains(service),
+                onChanged: (bool? value) {
+                  if (value != null && value) {
+                    selectedServices.add(service);
+                  } else {
+                    selectedServices.remove(service);
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -187,3 +204,36 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     );
   }
 }
+
+
+enum PaymentStatus {
+  paid,
+  pending,
+  failed,
+  refunded,
+  none,
+}
+
+// Extend the enum to return the associated string value
+extension PaymentStatusExtension on PaymentStatus {
+  String get name {
+    switch (this) {
+      case PaymentStatus.paid:
+        return 'Paid';
+      case PaymentStatus.pending:
+        return 'Pending';
+      case PaymentStatus.failed:
+        return 'Failed';
+      case PaymentStatus.refunded:
+        return 'Refunded';
+      case PaymentStatus.none:
+        return '';
+      default:
+        return '';
+    }
+  }
+}
+
+
+
+

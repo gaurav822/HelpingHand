@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
 import 'package:helpinghand/features/dashboard/controllers/dashboard_controller.dart';
 import 'package:helpinghand/features/service/models/expert_list_model.dart';
+import 'package:helpinghand/features/service/models/purchase_list.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
 import '../../../Utils/popups/full_screen_loader.dart';
@@ -18,6 +19,7 @@ class ServiceController extends GetxController {
   // State variables
   var serviceRequests = <RequestedService>[].obs;
   var services = <Service>[].obs;
+  var purchases = <Purchase>[].obs;
   var isLoading = true.obs;
 
   @override
@@ -25,6 +27,7 @@ class ServiceController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getServiceTypes();
+    getPurchasedServices();
     getServiceRequests();
   }
 
@@ -33,6 +36,16 @@ class ServiceController extends GetxController {
       List<Service> serviceList =
           await ServiceRepository.instance.getServiceTypes();
       services.assignAll(serviceList);
+    } catch (e) {
+      isLoading(false); // Stop loading
+    }
+  }
+
+  Future<void> getPurchasedServices() async{
+    try {
+      List<Purchase> purchaseList =
+      ServiceRepository.instance.getPurchaseList();
+      purchases.assignAll(purchaseList);
     } catch (e) {
       isLoading(false); // Stop loading
     }
