@@ -1,23 +1,23 @@
 class StudentModel {
   final String firstname;
   final String lastname;
-  final String school;
+  // final String school;
   final String email;
-  final String schoolEmail;
-  final String nationality;
-  final String phoneNumber;
-  final String address;
+  // final String schoolEmail;
+  // final String nationality;
+  // final String phoneNumber;
+  // final String address;
   final String password;
 
   StudentModel({
     required this.firstname,
     required this.lastname,
-    required this.school,
+    // required this.school,
     required this.email,
-    required this.schoolEmail,
-    required this.nationality,
-    required this.phoneNumber,
-    required this.address,
+    // required this.schoolEmail,
+    // required this.nationality,
+    // required this.phoneNumber,
+    // required this.address,
     required this.password,
   });
 
@@ -28,12 +28,12 @@ class StudentModel {
   static StudentModel empty() => StudentModel(
     firstname: '',
     lastname: '',
-    school: '',
+    // school: '',
     email: '',
-    schoolEmail: '',
-    nationality: '',
-    phoneNumber: '',
-    address: '',
+    // schoolEmail: '',
+    // nationality: '',
+    // phoneNumber: '',
+    // address: '',
     password: '',
   );
 
@@ -42,12 +42,12 @@ class StudentModel {
     final data = {
       'firstname': firstname,
       'lastname': lastname,
-      'school': school,
+      // 'school': school,
       'email':email,
-      'schoolEmail': schoolEmail,
-      'nationality': nationality,
-      'phoneNumber': phoneNumber,
-      'address': address,
+      // 'schoolEmail': schoolEmail,
+      // 'nationality': nationality,
+      // 'phoneNumber': phoneNumber,
+      // 'address': address,
       'password': password,
     };
 
@@ -59,12 +59,12 @@ class StudentModel {
     return StudentModel(
       firstname: json['firstname'],
       lastname: json['lastname'],
-      school: json['school'],
+      // school: json['school'],
       email: json['email'],
-      schoolEmail: json['schoolEmail'],
-      nationality: json['nationality'],
-      phoneNumber: json['phoneNumber'],
-      address: json['address'],
+      // schoolEmail: json['schoolEmail'],
+      // nationality: json['nationality'],
+      // phoneNumber: json['phoneNumber'],
+      // address: json['address'],
       password: json['password'],
     );
   }

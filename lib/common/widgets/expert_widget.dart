@@ -22,7 +22,7 @@ class ExpertWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("${expertListModel.firstname} ${expertListModel.lastname}"),
-            Image.asset(RatingMapper(expertListModel.rating).assetPath,height: 40,width: 120,)
+            Image.asset(RatingMapper(expertListModel.rating??5).assetPath,height: 40,width: 120,)
           ],
         ),
       ],

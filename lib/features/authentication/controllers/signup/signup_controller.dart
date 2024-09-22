@@ -50,12 +50,12 @@ class SignUpController extends GetxController {
       final student = StudentModel(
           firstname: firstName.text.trim(),
           lastname: lastName.text.trim(),
-          school: schoolName.text.trim(),
+          // school: schoolName.text.trim(),
           email: emailAddress.text.trim(),
-          schoolEmail: schoolEmailAddress.text.trim(),
-          nationality: nationality.text.trim(),
-          phoneNumber: phoneNumber.text.trim(),
-          address: address.text.trim(),
+          // schoolEmail: schoolEmailAddress.text.trim(),
+          // nationality: nationality.text.trim(),
+          // phoneNumber: phoneNumber.text.trim(),
+          // address: address.text.trim(),
           password: password.text.trim());
 
       final studentRepository = Get.put(StudentRepository());

@@ -42,10 +42,10 @@ class ProfileController extends GetxController {
       firstName.text = student.firstname;
       lastName.text = student.lastname;
       emailAddress.text = student.email;
-      schoolName.text=student.school;
-      nationality.text = student.nationality;
-      phoneNumber.text = student.phoneNumber;
-      address.text = student.address;
+      // schoolName.text=student.school;
+      // nationality.text = student.nationality;
+      // phoneNumber.text = student.phoneNumber;
+      // address.text = student.address;
     }
     finally{
       isLoading(false); // Stop loading

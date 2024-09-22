@@ -19,12 +19,12 @@ class ExpertListModel {
   final String lastname;
   final String userType;
   final String t;
-  final String bio;
+  final String? bio;
   final List<String> expertise;
-  final double rating;
-  final String nationality;
-  final String phoneNumber;
-  final String address;
+  final double? rating;
+  final String? nationality;
+  final String? phoneNumber;
+  final String? address;
   final DateTime createdAt;
   final DateTime updatedAt;
   final int v;

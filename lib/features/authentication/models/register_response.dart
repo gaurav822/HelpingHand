@@ -33,13 +33,13 @@ class User {
   final bool isAdmin;
   final String id;
   final String t;
-  final String? school;           // Optional field
-  final String? schoolEmail;      // Optional field
-  final String? bio;              // Optional field for experts
+  // final String? school;           // Optional field
+  // final String? schoolEmail;      // Optional field
+  // final String? bio;              // Optional field for experts
   final List<String>? expertise;  // Optional field for experts
-  final String nationality;
-  final String phoneNumber;
-  final String address;
+  // final String? nationality;
+  // final String? phoneNumber;
+  // final String? address;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -52,13 +52,13 @@ class User {
     required this.isAdmin,
     required this.id,
     required this.t,
-    this.school,                  // Optional field
-    this.schoolEmail,             // Optional field
-    this.bio,                     // Optional field
+    // this.school,                  // Optional field
+    // this.schoolEmail,             // Optional field
+    // this.bio,                     // Optional field
     this.expertise,               // Optional field
-    required this.nationality,
-    required this.phoneNumber,
-    required this.address,
+    // required this.nationality,
+    // required this.phoneNumber,
+    // required this.address,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -72,13 +72,13 @@ class User {
     isAdmin: json["isAdmin"],
     id: json["_id"],
     t: json["__t"],
-    school: json["school"],                     // May or may not exist
-    schoolEmail: json["schoolEmail"],           // May or may not exist
-    bio: json["bio"],                           // May or may not exist
+    // school: json["school"],                     // May or may not exist
+    // schoolEmail: json["schoolEmail"],           // May or may not exist
+    // bio: json["bio"],                           // May or may not exist
     expertise: json["expertise"] != null ? List<String>.from(json["expertise"]) : null, // May or may not exist
-    nationality: json["nationality"],
-    phoneNumber: json["phoneNumber"],
-    address: json["address"],
+    // nationality: json["nationality"],
+    // phoneNumber: json["phoneNumber"],
+    // address: json["address"],
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
   );
@@ -92,13 +92,13 @@ class User {
     "isAdmin": isAdmin,
     "_id": id,
     "__t": t,
-    "school": school,                         // Include only if exists
-    "schoolEmail": schoolEmail,               // Include only if exists
-    "bio": bio,                               // Include only if exists
+    // "school": school,                         // Include only if exists
+    // "schoolEmail": schoolEmail,               // Include only if exists
+    // "bio": bio,                               // Include only if exists
     "expertise": expertise != null ? List<dynamic>.from(expertise!) : null, // Include only if exists
-    "nationality": nationality,
-    "phoneNumber": phoneNumber,
-    "address": address,
+    // "nationality": nationality,
+    // "phoneNumber": phoneNumber,
+    // "address": address,
     "createdAt": createdAt.toIso8601String(),
     "updatedAt": updatedAt.toIso8601String(),
   };

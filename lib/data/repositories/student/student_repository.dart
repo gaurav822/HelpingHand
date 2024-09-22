@@ -29,6 +29,7 @@ class StudentRepository extends GetxController {
 
       if (response.statusCode == 201) {
         // Handle success
+        print(response.body);
         return registerResponseFromJson(response.body);
       } else {
         // Handle server errors

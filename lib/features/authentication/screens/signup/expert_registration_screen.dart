@@ -52,171 +52,171 @@ class _ExpertRegisterScreenState extends State<ExpertRegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SingleChildScrollView(
-          child: Form(
-            key: controller.formKey,
-            child: Column(
-              children: [
-                Center(
-                  child: Text(
-                    GTexts.expertReg,
-                    style: style20Medium(),
+    return Material(
+      child: SafeArea(
+        child:  SingleChildScrollView(
+            child: Form(
+              key: controller.formKey,
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      GTexts.expertReg,
+                      style: style20Medium(),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-                Column(
-                  children: [
-                    FieldWidget(
-                      label: GTexts.firstName,
-                      controller: controller.firstName,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.firstName, value),
-                    ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.lastName,
-                      controller: controller.lastName,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.lastName, value),
-                    ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.email,
-                      controller: controller.emailAddress,
-                      validator: (value) =>
-                          FormValidator.validateEmail(value),
-                    ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.nationality,
-                      controller: controller.nationality,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText( GTexts.nationality,value),
-                    ),
-                    const SizedBox(height: 10),
-                    FieldWidget(
-                      label: GTexts.phoneNumber,
-                      controller: controller.phoneNumber,
-                      validator: (value) =>
-                          FormValidator.validatePhoneNumber(value),
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 10),
-
-                    FieldWidget(
-                      label: GTexts.address,
-                      controller: controller.address,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.address, value),
-                    ),
-                    const SizedBox(height: 10),
-
-                    FieldWidget(
-                      label: GTexts.shortBio,
-                      controller: controller.bio,
-                      maxLines: 2,
-                      maxLength: 60,
-                      validator: (value) =>
-                          FormValidator.validateEmptyText(GTexts.shortBio, value),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Obx(
-                          () => FieldWidget(
-                          label: GTexts.password,
-                          hasSuffix: true,
-                          suffixIcon: Icon(controller.hidePassword.value?Iconsax.eye_slash : Iconsax.eye),
-                          controller: controller.password,
-                          validator: (value) =>
-                              FormValidator.validatePassword(value),
-                          obscureText: controller.hidePassword.value,
-                          onSuffixClicked: () => controller.hidePassword.value = !controller.hidePassword.value
-
-                      ),
-                    ),
-                    const SizedBox(height: 30,),
-
-                    // Inside the build method of _ExpertRegisterScreenState
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Select your Expertise",style: style16Medium(),),
-                        const SizedBox(width: 20,),
-                        InkWell(
-                          onTap: (){
-                            _showInformationDialog(context);
-                          },
-                            child: Image.asset("assets/question.png",height: 30,width: 30,))
-                      ],
-                    ),
-                    const SizedBox(height: 30,),
-
-
-                       Obx(() {
-                        if(controller.isLoading.value){
-                          return const Center(child: CircularProgressIndicator(),);
-                        }
-                        else if(controller.services.isEmpty){
-                          return const Center(child: Text("No Services Found"),);
-                        }
-                        else{
-                          return Column(
-                            children: controller.services.map((service) {
-                              final isSelected = selectedServices[service.typename]!;
-                              return CheckboxListTile(
-                              activeColor: LightThemeColor.colorPrimary,
-                              title: Text(service.typename, style: style16Medium()),
-                              value: isSelected,
-                              onChanged: (value) {
-                                selectedServices[service.typename] = value!;
-                              },
-                                                            );
-                            }).toList(),
-                          );
-                        }
-                      }),
-
-
-                    const SizedBox(height: 40),
-                    SubmitButton(
-                      text: GTexts.register,
-                      onPressedCallback: () {
-                        controller.updateSelectedServices(selectedServices);
-                        ExpertSignUpController.instance.signUp();
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  const SizedBox(height: 30),
+                  Column(
                     children: [
-                      Text(GTexts.alreadyAcc, style: style16()),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Text(
-                          GTexts.signIn,
-                          style: style16(color: ThemeColor.colorPrimary),
+                      FieldWidget(
+                        label: GTexts.firstName,
+                        controller: controller.firstName,
+                        validator: (value) =>
+                            FormValidator.validateEmptyText(GTexts.firstName, value),
+                      ),
+                      const SizedBox(height: 10),
+                      FieldWidget(
+                        label: GTexts.lastName,
+                        controller: controller.lastName,
+                        validator: (value) =>
+                            FormValidator.validateEmptyText(GTexts.lastName, value),
+                      ),
+                      const SizedBox(height: 10),
+                      FieldWidget(
+                        label: GTexts.email,
+                        controller: controller.emailAddress,
+                        validator: (value) =>
+                            FormValidator.validateEmail(value),
+                      ),
+                      const SizedBox(height: 10),
+                      // FieldWidget(
+                      //   label: GTexts.nationality,
+                      //   controller: controller.nationality,
+                      //   validator: (value) =>
+                      //       FormValidator.validateEmptyText( GTexts.nationality,value),
+                      // ),
+                      // const SizedBox(height: 10),
+                      // FieldWidget(
+                      //   label: GTexts.phoneNumber,
+                      //   controller: controller.phoneNumber,
+                      //   validator: (value) =>
+                      //       FormValidator.validatePhoneNumber(value),
+                      //   keyboardType: TextInputType.number,
+                      // ),
+                      // const SizedBox(height: 10),
+                      //
+                      // FieldWidget(
+                      //   label: GTexts.address,
+                      //   controller: controller.address,
+                      //   validator: (value) =>
+                      //       FormValidator.validateEmptyText(GTexts.address, value),
+                      // ),
+                      // const SizedBox(height: 10),
+                      //
+                      // FieldWidget(
+                      //   label: GTexts.shortBio,
+                      //   controller: controller.bio,
+                      //   maxLines: 2,
+                      //   maxLength: 60,
+                      //   validator: (value) =>
+                      //       FormValidator.validateEmptyText(GTexts.shortBio, value),
+                      // ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
+                      Obx(
+                            () => FieldWidget(
+                            label: GTexts.password,
+                            hasSuffix: true,
+                            suffixIcon: Icon(controller.hidePassword.value?Iconsax.eye_slash : Iconsax.eye),
+                            controller: controller.password,
+                            validator: (value) =>
+                                FormValidator.validatePassword(value),
+                            obscureText: controller.hidePassword.value,
+                            onSuffixClicked: () => controller.hidePassword.value = !controller.hidePassword.value
+      
                         ),
+                      ),
+                      const SizedBox(height: 30,),
+      
+                      // Inside the build method of _ExpertRegisterScreenState
+      
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Select your Expertise",style: style16Medium(),),
+                          const SizedBox(width: 20,),
+                          InkWell(
+                            onTap: (){
+                              _showInformationDialog(context);
+                            },
+                              child: Image.asset("assets/question.png",height: 30,width: 30,))
+                        ],
+                      ),
+                      const SizedBox(height: 30,),
+      
+      
+                         Obx(() {
+                          if(controller.isLoading.value){
+                            return const Center(child: CircularProgressIndicator(),);
+                          }
+                          else if(controller.services.isEmpty){
+                            return const Center(child: Text("No Services Found"),);
+                          }
+                          else{
+                            return Column(
+                              children: controller.services.map((service) {
+                                final isSelected = selectedServices[service.typename]!;
+                                return CheckboxListTile(
+                                activeColor: LightThemeColor.colorPrimary,
+                                title: Text(service.typename, style: style16Medium()),
+                                value: isSelected,
+                                onChanged: (value) {
+                                  selectedServices[service.typename] = value!;
+                                },
+                                                              );
+                              }).toList(),
+                            );
+                          }
+                        }),
+      
+      
+                      const SizedBox(height: 40),
+                      SubmitButton(
+                        text: GTexts.register,
+                        onPressedCallback: () {
+                          controller.updateSelectedServices(selectedServices);
+                          ExpertSignUpController.instance.signUp();
+                        },
                       ),
                     ],
                   ),
-                ),
-
-                const SizedBox(height: 40,)
-              ],
+                  const SizedBox(height: 30),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(GTexts.alreadyAcc, style: style16()),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            GTexts.signIn,
+                            style: style16(color: ThemeColor.colorPrimary),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+      
+                  const SizedBox(height: 40,)
+                ],
+              ),
             ),
           ),
-        ),
+        
       ),
     );
   }

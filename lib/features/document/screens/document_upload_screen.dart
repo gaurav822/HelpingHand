@@ -71,91 +71,91 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
           return Future.value(false);
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 50,),
-              Center(child: Text("Upload Document!", style: style20Bold(),)),
-              const SizedBox(height: 20,),
-              Center(child: Text(widget.profile.user.email ?? '', style: style14(),)),
-              const SizedBox(height: 40,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  "Please upload your document to verify your account!",
-                  style: style14(),
-                  textAlign: TextAlign.center,
+      child: Material(
+        child: SafeArea(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50,),
+                Center(child: Text("Upload Document!", style: style20Bold(),)),
+                const SizedBox(height: 20,),
+                Center(child: Text(widget.profile.user.email ?? '', style: style14(),)),
+                const SizedBox(height: 40,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "Please upload your document to verify your account!",
+                    style: style14(),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40,),
-              Image.asset('assets/icons/verify_document.jpg'),
-              const SizedBox(height: 40,),
-
-              // Dynamic list of ImagePickerWidgets based on documentServices
-              Expanded(
-                child: ListView.builder(
-                  itemCount: widget.documentServices.length,
-                  itemBuilder: (context, index) {
-                    final documentService = widget.documentServices[index];
-                    bool isUploaded = uploadedDocuments[documentService.id] ?? false;
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: ImagePickerWidget(
-                              title: 'Upload ${documentService.docName} document',
-                              onImagePicked: (value) {
-                                if (value != null) {
-                                  if (isUploaded) {
-                                    Loaders.errorSnackBar(
-                                        title: '${documentService.docName} document already uploaded');
-                                  } else {
-                                    documentController.uploadDocument(
-                                        documentService.type, documentService.docName, value, documentService.id, widget.profile);
-
-                                    // Mark the document as uploaded
-                                    onDocumentUploaded(documentService.id);
+                const SizedBox(height: 40,),
+                Image.asset('assets/icons/verify_document.jpg'),
+                const SizedBox(height: 40,),
+        
+                // Dynamic list of ImagePickerWidgets based on documentServices
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.documentServices.length,
+                    itemBuilder: (context, index) {
+                      final documentService = widget.documentServices[index];
+                      bool isUploaded = uploadedDocuments[documentService.id] ?? false;
+        
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: ImagePickerWidget(
+                                title: 'Upload ${documentService.docName} document',
+                                onImagePicked: (value) {
+                                  if (value != null) {
+                                    if (isUploaded) {
+                                      Loaders.errorSnackBar(
+                                          title: '${documentService.docName} document already uploaded');
+                                    } else {
+                                      documentController.uploadDocument(
+                                          documentService.type, documentService.docName, value, documentService.id, widget.profile);
+        
+                                      // Mark the document as uploaded
+                                      onDocumentUploaded(documentService.id);
+                                    }
                                   }
-                                }
-                              },
-                            ),
-                          ),
-                          if (isUploaded)
-                            const Padding(
-                              padding: EdgeInsets.only(right: 20),
-                              child: Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                                size: 30,
+                                },
                               ),
                             ),
-                        ],
-                      ),
-                    );
-                  },
+                            if (isUploaded)
+                              const Padding(
+                                padding: EdgeInsets.only(right: 20),
+                                child: Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 30,
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-
-              // Submit button only enabled when all documents are uploaded
-              areAllDocumentsUploaded()
-                  ? Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: SubmitButton(
-                  text: 'Continue',
-                  onPressedCallback: () {
-                    Get.offAll(const LoginScreen());
-                  },
-                ),
-              )
-                  : const SizedBox()
-            ],
+        
+                // Submit button only enabled when all documents are uploaded
+                areAllDocumentsUploaded()
+                    ? Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: SubmitButton(
+                    text: 'Continue',
+                    onPressedCallback: () {
+                      Get.offAll(VerifyAccountScreen(email: widget.profile.user.email,));
+                    },
+                  ),
+                )
+                    : const SizedBox()
+              ],
+            ),
           ),
-        ),
       ),
     );
   }

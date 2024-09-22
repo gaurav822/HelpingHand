@@ -10,38 +10,76 @@ import '../../../../core/app_color.dart';
 import '../../../../core/app_style.dart';
 
 class VerifyAccountScreen extends StatelessWidget {
-  const VerifyAccountScreen({super.key,this.email});
+  const VerifyAccountScreen({super.key, this.email});
 
   final String? email;
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(VerifyAccountController());
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
+    return Material(
+      child: SafeArea(
+        child: Stack(
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(child: Text("Hang Tight!", style: style20Bold(),)),
-                const SizedBox(height: 20,),
-                Center(child: Text(email ?? '', style: style14(),)),
+                Center(
+                    child: Text(
+                  "Hang Tight!",
+                  style: style20Bold(),
+                )),
+                const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                    child: Text(
+                  email ?? '',
+                  style: style14(),
+                )),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal:
+                          20.0), // Optional: Add padding for better alignment
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.warning,color: Colors.red,),
+                      const SizedBox(width: 5,),
+                      Text(
+                        "Email verification action required",
+                        style: style16(color: ThemeColor.colorRed),
+                        textAlign: TextAlign
+                            .center, // Center align the text within the Text widget
+                      ),
+                    ],
+                  )
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Image.asset('assets/icons/verify_document.jpg'),
                 const SizedBox(height: 40,),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0), // Optional: Add padding for better alignment
+                  padding: const EdgeInsets.symmetric(
+                      horizontal:
+                      20.0), // Optional: Add padding for better alignment
                   child: Text(
-                    "We are on the way to verify your  document!",
-                    style: style14(),
-                    textAlign: TextAlign.center, // Center align the text within the Text widget
+                    "We are on the way to verify your  documents!",
+                    style: style16(),
+                    textAlign: TextAlign
+                        .center, // Center align the text within the Text widget
                   ),
                 ),
-
-                const SizedBox(height: 40,),
-                Image.asset('assets/icons/verify_document.jpg'),
-                const SizedBox(height: 80,),
-                SubmitButton(text: "Continue", onPressedCallback: () =>  Get.offAll(const LoginScreen())),
-
+                const SizedBox(
+                  height: 80,
+                ),
+                SubmitButton(
+                    text: "Continue",
+                    onPressedCallback: () => Get.offAll(const LoginScreen())),
               ],
             ),
             const Positioned(

@@ -18,7 +18,7 @@ import 'features/service/controllers/service_controller.dart';
 
 Future<void> main() async{
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white
+      statusBarColor: Colors.transparent
   ));
 
   //Widgets binding

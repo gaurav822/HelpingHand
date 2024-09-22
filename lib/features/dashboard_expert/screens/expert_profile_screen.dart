@@ -68,16 +68,16 @@ class ExpertProfileScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 10,),
-                          Text("${expertProfile!.firstname} ${expertProfile.lastname}",style: style20Medium(),),
+                          Text("${expertProfile?.firstname??""} ${expertProfile?.lastname??""}",style: style20Medium(),),
 
                           const SizedBox(height: 10,),
-                          Text(expertProfile.expertise.join(', '),style: style14(),),
+                          Text(expertProfile!.expertise.join(', '),style: style14(),),
                           const SizedBox(height: 10,),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset(RatingMapper(expertProfile.rating.toDouble()).assetPath,height: 40,width: 120,),
+                              Image.asset(RatingMapper(expertProfile.rating?.toDouble()??5).assetPath,height: 40,width: 120,),
                               const SizedBox(width: 10,),
                               Text("${expertProfile.rating}/5"),
                             ],
@@ -89,7 +89,7 @@ class ExpertProfileScreen extends StatelessWidget {
                       const SizedBox(height: 10,),
 
                       Text(
-                          expertProfile.bio),
+                          expertProfile.bio??""),
 
                       SizedBox(height: 40,),
                       Text("Compliance Documents",style: style16Bold(),),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:helpinghand/core/colors/light_theme_color.dart';
 import 'package:helpinghand/features/accomodation/screens/accomodation_listing_screen.dart';
 import 'package:helpinghand/features/dashboard/screens/payment_screen.dart';
+import 'package:helpinghand/features/dashboard/screens/pending_payment_screen.dart';
 import 'package:helpinghand/features/job/screens/job_listing.dart';
 import 'package:helpinghand/features/service/models/service.dart';
 
@@ -120,7 +121,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
         if (service.typename == "Jobs") {
           // Navigate to JobListingScreen
         } else if (service.typename == "Accomodation") {
-          // Navigate to AccomodationListingScreen
+
         } else {
           // Navigate to ServiceRequestScreen
         }
@@ -161,6 +162,13 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
               selectedServices.add(service);
             }
           });
+        }
+
+        if(status==PaymentStatus.paid){
+
+        }
+        if(status==PaymentStatus.pending){
+          Get.to(()=>const PaymentPendingScreen());
         }
       },
       child: Container(
