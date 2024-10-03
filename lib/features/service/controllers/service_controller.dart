@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/data/repositories/expert/expert_repository.dart';
@@ -43,8 +45,9 @@ class ServiceController extends GetxController {
 
   Future<void> getPurchasedServices() async{
     try {
-      List<Purchase> purchaseList =
-      ServiceRepository.instance.getPurchaseList();
+      List<Purchase> purchaseList = await ServiceRepository.instance.getPurchaseList();
+      print("The purchase list is ");
+      log(purchaseList.toString());
       purchases.assignAll(purchaseList);
     } catch (e) {
       isLoading(false); // Stop loading

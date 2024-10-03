@@ -66,11 +66,13 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                                 // Find the purchase status for each service
                                 var status = getServicePaymentStatus(serviceController.purchases, service.id);
 
+                                var reqId = getId(serviceController.purchases, service.id);
+
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 20),
                                   child: service.typename == "Jobs" || service.typename == "Accomodation"
                                       ? individualService(service)
-                                      : individualServiceWithSelection(service, index, status),
+                                      : individualServiceWithSelection(service, index, status,reqId),
                                 );
                               }).toList(),
                             ),
@@ -97,22 +99,42 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
   // Function to check the payment status of a service
   PaymentStatus getServicePaymentStatus(List<Purchase> purchases, String serviceId) {
     for (var purchase in purchases) {
-      if (purchase.serviceTypes.contains(serviceId)) {
-        switch (purchase.paymentStatus.toLowerCase()) {
-          case 'paid':
-            return PaymentStatus.paid;
-          case 'pending':
-            return PaymentStatus.pending;
-          case 'failed':
-            return PaymentStatus.failed;
-          case 'refunded':
-            return PaymentStatus.refunded;
-          default:
-            return PaymentStatus.none;
+      for(var data in purchase.serviceTypes){
+        if (data.id.contains(serviceId)) {
+          switch (purchase.paymentStatus.toLowerCase()) {
+            case 'confirmed':
+              return PaymentStatus.confirmed;
+            case 'pending':
+              return PaymentStatus.pending;
+            case 'failed':
+              return PaymentStatus.failed;
+            case 'refunded':
+              return PaymentStatus.refunded;
+            default:
+              return PaymentStatus.none;
+          }
+        }
+      }
+      }
+    return PaymentStatus.none;
+
+  }
+
+
+  String getId(List<Purchase> purchases, String serviceId) {
+    for (var purchase in purchases) {
+      for(int j=0;j<purchase.serviceTypes.length;j++){
+        if (purchase.serviceTypes[j].id.contains(serviceId)) {
+          switch (purchase.paymentStatus.toLowerCase()) {
+            case 'confirmed':
+              return purchase.services[j].id;
+            default:
+              return '';
+          }
         }
       }
     }
-    return PaymentStatus.none;
+    return '';
   }
 
   Widget individualService(Service service) {
@@ -151,7 +173,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     );
   }
 
-  Widget individualServiceWithSelection(Service service, int index, PaymentStatus status) {
+  Widget individualServiceWithSelection(Service service, int index, PaymentStatus status,String reqId) {
     return InkWell(
       onTap: () {
         if (status == PaymentStatus.none) {
@@ -164,8 +186,8 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
           });
         }
 
-        if(status==PaymentStatus.paid){
-
+        if(status==PaymentStatus.confirmed){
+          Get.to(()=>ServiceRequestScreen(service: service,reqId: reqId,));
         }
         if(status==PaymentStatus.pending){
           Get.to(()=>const PaymentPendingScreen());
@@ -189,7 +211,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                   Text('\$${service.price}', style: style12()),
                 ],
               ),
-              status == PaymentStatus.paid
+              status == PaymentStatus.confirmed
                   ? Image.asset("assets/icons/paid.png", height: 40, width: 40)
                   : status == PaymentStatus.pending
                   ? Image.asset("assets/pending_pay.png", height: 40, width: 40)
@@ -215,7 +237,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
 
 
 enum PaymentStatus {
-  paid,
+  confirmed,
   pending,
   failed,
   refunded,
@@ -226,8 +248,8 @@ enum PaymentStatus {
 extension PaymentStatusExtension on PaymentStatus {
   String get name {
     switch (this) {
-      case PaymentStatus.paid:
-        return 'Paid';
+      case PaymentStatus.confirmed:
+        return 'Confirmed';
       case PaymentStatus.pending:
         return 'Pending';
       case PaymentStatus.failed:

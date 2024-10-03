@@ -25,7 +25,6 @@ class ServiceRepository extends GetxController {
   // Function to save user data through API
   Future<void> sendServiceRequest(String expertId,String serviceTypeId) async {
     final url = Uri.parse('${AppConstants.baseUrl}/service/request/create');
-
     final studentId = await secureStorageService.read(AppConstants.userId);
     final token = await secureStorageService.read(AppConstants.accessToken);
     try {
@@ -36,9 +35,8 @@ class ServiceRepository extends GetxController {
           'x-auth-token':token!
         },
         body: json.encode({
-          'studentId':studentId,
           'expertId':expertId,
-          'serviceTypeId':serviceTypeId
+          'serviceId':serviceTypeId
         }),
       );
 
@@ -147,8 +145,33 @@ class ServiceRepository extends GetxController {
     }
   }
 
-  List<Purchase> getPurchaseList() {
-    return DummyData.dummyPurchases;
+  Future<List<Purchase>> getPurchaseList() async{
+    final token = await secureStorageService.read(AppConstants.accessToken);
+    final url = Uri.parse('${AppConstants.baseUrl}/service/purchases');
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'x-auth-token':token!,
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Handle success
+        print(response.body);
+        return purchaseListFromJson(response.body).purchaseWithServices;
+
+      } else {
+        // Handle server errors
+        throw ApiException(response.statusCode, response.body);
+      }
+    } on http.ClientException catch (e) {
+      throw ApiException(
+          500, e.message); // Customize as per your error handling
+    } catch (e) {
+      rethrow;
+    }
   }
 
 }

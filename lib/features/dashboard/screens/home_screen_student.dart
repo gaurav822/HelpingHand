@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onRefresh: () async{
                         await serviceController.getServiceRequests();
                         await controller.getExperts();
+                        await serviceController.getPurchasedServices();
                       },
                       child: ListView(
                         children: [Column(

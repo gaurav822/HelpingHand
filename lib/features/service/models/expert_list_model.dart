@@ -14,7 +14,7 @@ class ExpertListModel {
   final String email;
   final String password;
   final bool isVerified;
-  final String emailToken;
+  final String? emailToken;
   final String firstname;
   final String lastname;
   final String userType;

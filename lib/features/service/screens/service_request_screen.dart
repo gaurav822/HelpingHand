@@ -10,12 +10,12 @@ import '../../dashboard/controllers/dashboard_controller.dart';
 
 class ServiceRequestScreen extends StatelessWidget {
   final Service service;
-  const ServiceRequestScreen({super.key, required this.service});
+  final String reqId;
+  const ServiceRequestScreen({super.key, required this.service, required this.reqId});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ServiceController());
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -63,7 +63,7 @@ class ServiceRequestScreen extends StatelessWidget {
                     else
                       InkWell(
                         onTap: () {
-                          controller.sendServiceRequest(expert.id,service.id);
+                          controller.sendServiceRequest(expert.id,reqId);
                         },
                         child: Image.asset("assets/icons/request.png"),
                       ),

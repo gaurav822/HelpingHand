@@ -14,7 +14,7 @@ class AppTheme {
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Status bar color
-        statusBarIconBrightness: Brightness.dark, // Dark icons
+        statusBarIconBrightness: Brightness.light, // Dark icons
       ),
 
     ),
