@@ -3,6 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/Utils/constants.dart';
 import 'package:helpinghand/features/dashboard_expert/controllers/expert_profile_controller.dart';
+import 'package:helpinghand/features/dashboard_expert/controllers/expert_service_controller.dart';
+import 'package:helpinghand/features/dashboard_expert/screens/expert_chat_req_widget.dart';
+import 'package:helpinghand/features/dashboard_expert/screens/expert_task_progress.dart';
 import 'package:helpinghand/features/service/controllers/service_controller.dart';
 
 import '../../../Utils/securestorage/secure_storage_service.dart';
@@ -27,7 +30,7 @@ class ExpertHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ExpertProfileController());
-    final serviceController = Get.put(ServiceController());
+    final serviceController = Get.put(ExpertServiceController());
     return SingleChildScrollView(
         child: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -40,7 +43,7 @@ class ExpertHomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: RefreshIndicator(
                     onRefresh: () async{
-                      await serviceController.getServiceRequests();
+                      await serviceController.getExpertServices();
                     },
                     child: ListView(
                         children: [
@@ -70,13 +73,13 @@ class ExpertHomeScreen extends StatelessWidget {
                                 return const Center(
                                   child: CircularProgressIndicator(),
                                 );
-                              } else if (serviceController.serviceRequests.isEmpty) {
+                              } else if (serviceController.services.isEmpty) {
                                 return const Center(
                                   child: Text("No Tasks found"),
                                 );
                               } else {
                                 // Filter out the service requests where the status is "Pending"
-                                var filteredRequests = serviceController.serviceRequests
+                                var filteredRequests = serviceController.services
                                     .where((service) => service.status != "Pending")
                                     .toList();
 
@@ -89,8 +92,8 @@ class ExpertHomeScreen extends StatelessWidget {
                                     children: filteredRequests.map((service) {
                                       return Container(
                                           margin: const EdgeInsets.only(bottom: 20),
-                                          child: TaskProgressFrame(
-                                            user: service.studentId,
+                                          child: ExpertProgress(
+                                            user: service.serviceId.studentId,
                                             service: service,
                                           ));
                                     }).toList(),
@@ -110,13 +113,13 @@ class ExpertHomeScreen extends StatelessWidget {
                                   child: CircularProgressIndicator(),
                                 );
                               }
-                              else if (serviceController.serviceRequests.isEmpty) {
+                              else if (serviceController.services.isEmpty) {
                                 return const Center(child: Text("No Requests Found"));
 
                               } else {
                                 return Column(
-                                  children: serviceController.serviceRequests.map((serviceReq) {
-                                    return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.studentId,);
+                                  children: serviceController.services.map((serviceReq) {
+                                    return ExpertChatReqWidget(service: serviceReq,tid: serviceReq.serviceId.studentId,);
                                   }).toList(),
                                 );
                               }

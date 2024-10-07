@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helpinghand/features/dashboard/screens/chat_screen.dart';
+import 'package:helpinghand/features/dashboard_expert/controllers/expert_service_controller.dart';
 import 'package:helpinghand/features/service/models/requested_service.dart';
 
 import '../../core/app_style.dart';
 import '../../features/service/controllers/service_controller.dart';
 
 class ChatRequestWidget extends StatelessWidget {
-  final RequestedService requestedService;
-  final TId tid;
+  final StudentService requestedService;
+  final ExpertId tid;
   const ChatRequestWidget({super.key,required this.requestedService,required this.tid});
 
   @override
   Widget build(BuildContext context) {
-    final serviceController = Get.put(ServiceController());
+    final serviceController = Get.put(ExpertServiceController());
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(

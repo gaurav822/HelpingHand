@@ -18,7 +18,7 @@ class ExpertListModel {
   final String firstname;
   final String lastname;
   final String userType;
-  final String t;
+  final String? t;
   final String? bio;
   final List<String> expertise;
   final double? rating;

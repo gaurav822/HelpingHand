@@ -122,14 +122,16 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
 
 
   String getId(List<Purchase> purchases, String serviceId) {
-    for (var purchase in purchases) {
-      for(int j=0;j<purchase.serviceTypes.length;j++){
-        if (purchase.serviceTypes[j].id.contains(serviceId)) {
-          switch (purchase.paymentStatus.toLowerCase()) {
-            case 'confirmed':
-              return purchase.services[j].id;
-            default:
-              return '';
+    if(purchases.isNotEmpty){
+      for (var purchase in purchases) {
+        for(int j=0;j<purchase.serviceTypes.length;j++){
+          if (purchase.serviceTypes[j].id.contains(serviceId)) {
+            switch (purchase.paymentStatus.toLowerCase()) {
+              case 'confirmed':
+                return purchase.services[j].id;
+              default:
+                return '';
+            }
           }
         }
       }
@@ -141,8 +143,9 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     return InkWell(
       onTap: () {
         if (service.typename == "Jobs") {
-          // Navigate to JobListingScreen
+          Get.to(()=>const JobListingScreen());
         } else if (service.typename == "Accomodation") {
+          Get.to(()=>const AccomodationListingScreen());
 
         } else {
           // Navigate to ServiceRequestScreen

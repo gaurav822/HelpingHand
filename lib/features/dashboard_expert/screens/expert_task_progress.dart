@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:helpinghand/features/service/models/requested_service.dart';
 import 'package:progress_line/progress_line.dart';
 
-import '../../Utils/progressMapper.dart';
-import '../../core/app_style.dart';
+import '../../../Utils/progressMapper.dart';
+import '../../../core/app_style.dart';
+import '../models/expert_service.dart';
 
-class TaskProgressFrame extends StatefulWidget {
-  final ExpertId user;
-  final StudentService service;
-  const TaskProgressFrame({super.key, required this.user,required this.service});
+
+class ExpertProgress extends StatefulWidget {
+  final StudentId user;
+  final Service service;
+  const ExpertProgress({super.key, required this.user,required this.service});
 
   @override
-  State<TaskProgressFrame> createState() => _TaskProgressFrameState();
+  State<ExpertProgress> createState() => _TaskProgressFrameState();
 }
 
-class _TaskProgressFrameState extends State<TaskProgressFrame> {
+class _TaskProgressFrameState extends State<ExpertProgress> {
   double _value = 0.0;
 
   @override
@@ -45,7 +47,7 @@ class _TaskProgressFrameState extends State<TaskProgressFrame> {
                       Container(
                           margin: const EdgeInsets.only(left: 10),
                           child: Text(
-                            widget.service.serviceTypeId.typename,
+                            widget.service.serviceId.serviceTypeId.typename,
                             style: style14Semibold(),
                           )),
                       Row(

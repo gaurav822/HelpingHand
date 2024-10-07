@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:helpinghand/features/dashboard_expert/controllers/expert_service_controller.dart';
+import 'package:helpinghand/features/dashboard_expert/screens/expert_chat_req_widget.dart';
 
 import '../../../common/widgets/chat_request.dart';
 import '../../../common/widgets/submit_button.dart';
@@ -22,7 +24,7 @@ class ExpertChatListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final serviceController = ServiceController.instance;
+    final serviceController = ExpertServiceController.instance;
     return SingleChildScrollView(
         child: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -34,7 +36,7 @@ class ExpertChatListScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 }
-                else if (serviceController.serviceRequests.isEmpty) {
+                else if (serviceController.services.isEmpty) {
                   return Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -54,8 +56,8 @@ class ExpertChatListScreen extends StatelessWidget {
 
                 } else {
                   return Column(
-                    children: serviceController.serviceRequests.map((serviceReq) {
-                      return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.studentId,);
+                    children: serviceController.services.map((serviceReq) {
+                      return ExpertChatReqWidget(service: serviceReq,tid: serviceReq.serviceId.studentId,);
                     }).toList(),
                   );
                 }

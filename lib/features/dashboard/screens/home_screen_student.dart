@@ -80,21 +80,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return const Center(
                                   child: CircularProgressIndicator(),
                                 );
-                              } else if (serviceController.serviceRequests.isEmpty) {
+                              }
+
+                              if (serviceController.serviceRequests.isEmpty) {
                                 return const Center(
                                   child: Text("No Tasks found"),
                                 );
                               } else {
                                 return Column(
-                                  children: serviceController.serviceRequests.map((service) {
-                                    return Container(
-                                      margin: const EdgeInsets.only(bottom: 20),
-                                      child: TaskProgressFrame(service: service,user: service.expertId,)
-                                    );
+                                  children: serviceController.serviceRequests!.map((service) {
+                                    // Add a null check here
+                                    if (service.serviceRequest != null) {
+                                      return Container(
+                                        margin: const EdgeInsets.only(bottom: 20),
+                                        child: TaskProgressFrame(
+                                          service: service,
+                                          user: service.serviceRequest!.expertId,
+                                        ),
+                                      );
+                                    } else {
+                                      return const Center(
+                                        child: Text("No task found"),
+                                      );
+                                    }
                                   }).toList(),
                                 );
                               }
-                            }),
+                                                        }),
                             const SizedBox(height: 20,),
                             Text("Recommended Experts for You",style: style16Medium(),),
                             SizedBox(height: 20,),

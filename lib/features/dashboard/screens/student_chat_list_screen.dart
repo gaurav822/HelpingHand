@@ -35,7 +35,7 @@ class StudentChatListScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 }
-                else if (serviceController.serviceRequests.isEmpty) {
+                else if (serviceController.serviceRequests!.isEmpty) {
                   return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -55,8 +55,8 @@ class StudentChatListScreen extends StatelessWidget {
 
                 } else {
                   return Column(
-                    children: serviceController.serviceRequests.map((serviceReq) {
-                      return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.expertId,);
+                    children: serviceController.serviceRequests!.map((serviceReq) {
+                      return ChatRequestWidget(requestedService: serviceReq,tid: serviceReq.serviceRequest!.expertId,);
                     }).toList(),
                   );
                 }
