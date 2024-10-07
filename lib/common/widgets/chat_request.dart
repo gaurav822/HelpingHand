@@ -14,7 +14,8 @@ class ChatRequestWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final serviceController = Get.put(ExpertServiceController());
+    // final serviceController = Get.put(ServiceController());
+    print(requestedService.status);
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
@@ -43,15 +44,10 @@ class ChatRequestWidget extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    if(requestedService.status!="Pending"){
+                    if(requestedService.serviceRequest?.status!="Pending"){
                       Get.to(()=>ChatScreen(userName: "${tid.firstname} ${tid.lastname}"));
                     }
-                    else{
-                      if(tid.t=="Student"){
-                        serviceController.acceptServiceRequest(requestedService.id);
-                      }
-                    }
-                  }, child: Text(requestedService.status!="Pending"?"Chat":tid.t=="Student"?"Accept":requestedService.status))
+                  }, child: Text(requestedService.serviceRequest?.status!="Pending"?"Chat":requestedService.status))
 
             ],
           ),

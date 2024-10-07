@@ -26,6 +26,7 @@ class ExpertServiceController extends GetxController {
 
 
   Future<void> getExpertServices() async {
+    print("calling this method");
     try {
       List<Service> fetchedSer =
       await ServiceRepository.instance.getExpertServices();
@@ -52,6 +53,7 @@ class ExpertServiceController extends GetxController {
 
       final serviceRepository = Get.put(ServiceRepository());
       await serviceRepository.acceptServiceRequest(serviceRequestId);
+      print("calling from here");
       getExpertServices();
 
       FullScreenLoader.stopLoading();
